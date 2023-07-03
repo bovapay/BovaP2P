@@ -169,7 +169,7 @@ export function NumberRangeColumnFilter({ column: { filterValue = [], preFiltere
           const val = e.target.value;
           setFilter((old = []) => [val ? parseInt(val, 10) : undefined, old[1]]);
         }}
-        placeholder={`Min (${min})`}
+        placeholder={`От (${min})`}
         size="small"
       />
       <LineOutlined />
@@ -181,7 +181,7 @@ export function NumberRangeColumnFilter({ column: { filterValue = [], preFiltere
           const val = e.target.value;
           setFilter((old = []) => [old[0], val ? parseInt(val, 10) : undefined]);
         }}
-        placeholder={`Max (${max})`}
+        placeholder={`До (${max})`}
         size="small"
       />
     </Stack>

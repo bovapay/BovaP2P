@@ -9,6 +9,7 @@ import AuthGuard from 'utils/route-guard/AuthGuard';
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
 const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
+const Transactions = Loadable(lazy(() => import('pages/transactions')));
 
 // render - widget
 const WidgetStatistics = Loadable(lazy(() => import('pages/widget/statistics')));
@@ -134,6 +135,22 @@ const MainRoutes = {
             {
               index: true,
               element: <DashboardDefault />
+            },
+            {
+              path: 'transactions',
+              element: <Transactions />
+            },
+            {
+              path: 'disputes',
+              element: <></>
+            },
+            {
+              path: 'payOut',
+              element: <></>
+            },
+            {
+              path: 'massPayOut',
+              element: <></>
             },
             {
               path: 'analytics',

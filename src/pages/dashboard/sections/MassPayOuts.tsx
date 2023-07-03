@@ -64,8 +64,8 @@ const MassPayOuts = () => (
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow hover key={row.name}>
+            {rows.map((row, index) => (
+              <TableRow hover key={index}>
                 <TableCell sx={{ pl: 3, py: 2 }} component="th" scope="row">
                   {row.name}
                 </TableCell>

@@ -8,7 +8,7 @@ import { MenuProps } from 'types/menu';
 
 // initial state
 const initialState: MenuProps = {
-  openItem: ['dashboard'],
+  openItem: [],
   openComponent: 'buttons',
   selectedID: null,
   drawerOpen: false,
@@ -26,6 +26,38 @@ const initialState: MenuProps = {
         type: 'item',
         url: '/',
         icon: 'home',
+        target: false
+      },
+      {
+        id: 'transactions',
+        title: 'Транзакции',
+        type: 'item',
+        url: '/transactions',
+        icon: 'transactions',
+        target: false
+      },
+      {
+        id: 'disputes',
+        title: 'Спорные транзакции',
+        type: 'item',
+        url: '/disputes',
+        icon: 'disputes',
+        target: false
+      },
+      {
+        id: 'payOut',
+        title: 'Вывод средств',
+        type: 'item',
+        url: '/payOut',
+        icon: 'payOut',
+        target: false
+      },
+      {
+        id: 'massPayOut',
+        title: 'Массовые выплаты',
+        type: 'item',
+        url: '/massPayOut',
+        icon: 'massPayOut',
         target: false
       }
     ]

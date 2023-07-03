@@ -40,12 +40,10 @@ const App = () => {
         <Locales>
           <ScrollTop>
             <AuthProvider>
-              <>
-                <Notistack>
-                  <Routes />
-                  <Snackbar />
-                </Notistack>
-              </>
+              <Notistack>
+                <Routes />
+                <Snackbar />
+              </Notistack>
             </AuthProvider>
           </ScrollTop>
         </Locales>

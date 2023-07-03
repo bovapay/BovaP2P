@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'store';
 
 // assets
-import { DashboardOutlined, GoldOutlined, HomeOutlined } from '@ant-design/icons';
+import { DashboardOutlined, GoldOutlined, HomeOutlined, TransactionOutlined, PayCircleOutlined } from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
@@ -13,7 +13,8 @@ import { NavItemType } from 'types/menu';
 const icons = {
   dashboard: DashboardOutlined,
   components: GoldOutlined,
-  home: HomeOutlined
+  home: HomeOutlined,
+  transactions: TransactionOutlined
 };
 
 // ==============================|| MENU ITEMS - API ||============================== //

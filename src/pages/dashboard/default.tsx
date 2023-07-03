@@ -10,7 +10,6 @@ import Finances from './sections/Finances';
 import Accounts from './sections/Accounts';
 import PayOuts from './sections/PayOuts';
 import MassPayOuts from './sections/MassPayOuts';
-import OrderTable from 'sections/dashboard/default/OrdersTable';
 
 // ==============================|| DASHBOARD - DEFAULT ||============================== //
 

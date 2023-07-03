@@ -113,7 +113,7 @@ const Transactions = () => {
       [
         {
           Header: 'СУММА (USDT)',
-          accessor: 'amount_usdt',
+          accessor: 'id',
           Filter: NumberRangeColumnFilter,
           filter: 'between'
         },
@@ -125,8 +125,7 @@ const Transactions = () => {
         {
           Header: 'ПОЛУЧАТЕЛЬ',
           accessor: 'age',
-          filter: 'fuzzyText',
-          placeholder: 'Карта/номер получателя'
+          filter: 'fuzzyText'
         },
         {
           Header: 'СТАТУСЫ',

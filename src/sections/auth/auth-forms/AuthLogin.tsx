@@ -56,8 +56,8 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          email: Yup.string().email('Must be a valid email').max(255).required('Email обязателен'),
+          password: Yup.string().max(255).required('Пароль обязателен')
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
@@ -81,7 +81,7 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
+                  <InputLabel htmlFor="email-login">Email адрес</InputLabel>
                   <OutlinedInput
                     id="email-login"
                     type="email"
@@ -89,7 +89,7 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Enter email address"
+                    placeholder="Введите email адрес"
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
                   />
@@ -102,7 +102,7 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="password-login">Password</InputLabel>
+                  <InputLabel htmlFor="password-login">Пароль</InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.password && errors.password)}
@@ -125,7 +125,7 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    placeholder="Enter password"
+                    placeholder="Введите пароль"
                   />
                   {touched.password && errors.password && (
                     <FormHelperText error id="standard-weight-helper-text-password-login">
@@ -147,11 +147,11 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
                         size="small"
                       />
                     }
-                    label={<Typography variant="h6">Keep me sign in</Typography>}
+                    label={<Typography variant="h6">Запомнить меня</Typography>}
                   />
-                  <Link variant="h6" component={RouterLink} to={isDemo ? '/auth/forgot-password' : '/forgot-password'} color="text.primary">
+                  {/* <Link variant="h6" component={RouterLink} to={isDemo ? '/auth/forgot-password' : '/forgot-password'} color="text.primary">
                     Forgot Password?
-                  </Link>
+                  </Link> */}
                 </Stack>
               </Grid>
               {errors.submit && (
@@ -162,7 +162,7 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Login
+                    Войти
                   </Button>
                 </AnimateButton>
               </Grid>

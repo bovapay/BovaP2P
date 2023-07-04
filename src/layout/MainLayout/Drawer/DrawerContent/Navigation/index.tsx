@@ -53,7 +53,7 @@ const Navigation = () => {
   useLayoutEffect(() => {
     setMenuItems(menuItem);
     // eslint-disable-next-line
-  }, [menuItem]);
+  }, []);
 
   const isHorizontal = menuOrientation === MenuOrientation.HORIZONTAL && !downLG;
 

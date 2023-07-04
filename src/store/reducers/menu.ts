@@ -109,10 +109,10 @@ const initialState: MenuProps = {
 
 // ==============================|| SLICE - MENU ||============================== //
 
-export const fetchMenu = createAsyncThunk('', async () => {
-  const response = await axios.get('/api/menu/dashboard');
-  return response.data;
-});
+// export const fetchMenu = createAsyncThunk('', async () => {
+//   const response = await axios.get('/api/menu/dashboard');
+//   return response.data;
+// });
 
 const menu = createSlice({
   name: 'menu',

@@ -24,6 +24,8 @@ import {
 } from 'utils/react-table';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import Currency from 'react-currency-formatter';
+import { transformCurrencyValue } from 'utils/transformCurrencyValue';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -112,15 +114,26 @@ const Transactions = () => {
     () =>
       [
         {
-          Header: 'СУММА (USDT)',
-          accessor: 'id',
-          Filter: NumberRangeColumnFilter,
-          filter: 'between'
-        },
-        {
           Header: 'ID',
           accessor: 'lastName',
           filter: 'fuzzyText'
+        },
+        {
+          Header: 'СУММА (USDT)',
+          accessor: 'firstName',
+          disableFilters: true,
+          Cell: ({ value }: { value: string }) => {
+            return transformCurrencyValue(Math.random() * 10, { currency: 'USDT' });
+          }
+        },
+        {
+          Header: 'СУММА (Фиат)',
+          accessor: 'id',
+          Filter: NumberRangeColumnFilter,
+          filter: 'between',
+          Cell: ({ value }: { value: string }) => {
+            return transformCurrencyValue(Math.random() * 900, { currency: 'RUB' });
+          }
         },
         {
           Header: 'ПОЛУЧАТЕЛЬ',
@@ -146,7 +159,8 @@ const Transactions = () => {
         },
         {
           Header: 'ДАТА И ВРЕМЯ',
-          accessor: 'time'
+          accessor: 'time',
+          disableFilters: true
         }
       ] as Column[],
     []

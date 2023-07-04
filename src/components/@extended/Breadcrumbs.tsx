@@ -206,7 +206,7 @@ const Breadcrumbs = ({
                 <Typography component={Link} to="/" color="textSecondary" variant="h6" sx={{ textDecoration: 'none' }}>
                   {icons && <HomeOutlined style={iconSX} />}
                   {icon && !icons && <HomeFilled style={{ ...iconSX, marginRight: 0 }} />}
-                  {(!icon || icons) && 'Home'}
+                  {(!icon || icons) && 'Разделы'}
                 </Typography>
                 {mainContent}
                 {itemContent}

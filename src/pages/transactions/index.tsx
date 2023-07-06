@@ -1,31 +1,22 @@
 import { useMemo } from 'react';
 
 // material-ui
-import { Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Chip, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 // third-party
-import { useTable, useFilters, useGlobalFilter, Column, Row, HeaderGroup, Cell } from 'react-table';
+import { useTable, useFilters, useGlobalFilter, Column, HeaderGroup, Cell } from 'react-table';
 
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { CSVExport, EmptyTable } from 'components/third-party/ReactTable';
-import LinearWithLabel from 'components/@extended/progress/LinearWithLabel';
+import { EmptyTable } from 'components/third-party/ReactTable';
 
 import makeData from 'data/react-table';
-import {
-  GlobalFilter,
-  DefaultColumnFilter,
-  SelectColumnFilter,
-  SliderColumnFilter,
-  NumberRangeColumnFilter,
-  renderFilterTypes,
-  filterGreaterThan
-} from 'utils/react-table';
+import { GlobalFilter, DefaultColumnFilter, SelectColumnFilter, NumberRangeColumnFilter, renderFilterTypes } from 'utils/react-table';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import Currency from 'react-currency-formatter';
 import { transformCurrencyValue } from 'utils/transformCurrencyValue';
+import { useNavigate } from 'react-router-dom';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -33,6 +24,7 @@ function ReactTable({ columns, data }: { columns: Column[]; data: [] }) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
   const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
+  const navigate = useNavigate();
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state, preGlobalFilteredRows, setGlobalFilter } = useTable(
     {
@@ -89,9 +81,14 @@ function ReactTable({ columns, data }: { columns: Column[]; data: [] }) {
             sortingRow.map((row, i) => {
               prepareRow(row);
               return (
-                <TableRow {...row.getRowProps()}>
+                <TableRow sx={{ textDecoration: 'none' }} {...row.getRowProps()}>
                   {row.cells.map((cell: Cell) => (
-                    <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
+                    <TableCell
+                      onClick={() => navigate(`/transaction/${row.id}`)}
+                      {...cell.getCellProps([{ className: cell.column.className }])}
+                    >
+                      {cell.render('Cell')}
+                    </TableCell>
                   ))}
                 </TableRow>
               );
@@ -116,7 +113,8 @@ const Transactions = () => {
         {
           Header: 'ID',
           accessor: 'lastName',
-          filter: 'fuzzyText'
+          filter: 'fuzzyText',
+          disableFilters: true
         },
         {
           Header: 'СУММА (USDT)',
@@ -160,7 +158,10 @@ const Transactions = () => {
         {
           Header: 'ДАТА И ВРЕМЯ',
           accessor: 'time',
-          disableFilters: true
+          disableFilters: true,
+          Cell: ({ value }: { value: string }) => {
+            return <Typography color="secondary">{value}</Typography>;
+          }
         }
       ] as Column[],
     []

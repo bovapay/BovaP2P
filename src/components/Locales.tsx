@@ -16,6 +16,8 @@ const loadLocaleData = (locale: I18n) => {
       return import('utils/locales/ro.json');
     case 'zh':
       return import('utils/locales/zh.json');
+    case 'ru':
+      return import('utils/locales/ru.json');
     case 'en':
     default:
       return import('utils/locales/en.json');

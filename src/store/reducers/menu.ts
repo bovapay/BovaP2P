@@ -16,13 +16,13 @@ const initialState: MenuProps = {
   error: null,
   menu: {
     id: 'group-navigation',
-    title: 'Разделы',
+    title: 'sections',
     type: 'group',
     icon: 'home',
     children: [
       {
         id: 'main',
-        title: 'Главная',
+        title: 'main',
         type: 'item',
         url: '/',
         icon: 'home',
@@ -30,7 +30,7 @@ const initialState: MenuProps = {
       },
       {
         id: 'transactions',
-        title: 'Транзакции',
+        title: 'transactions',
         type: 'item',
         url: '/transactions',
         icon: 'transactions',
@@ -38,7 +38,7 @@ const initialState: MenuProps = {
       },
       {
         id: 'disputes',
-        title: 'Спорные транзакции',
+        title: 'disputes',
         type: 'item',
         url: '/disputes',
         icon: 'disputes',
@@ -46,7 +46,7 @@ const initialState: MenuProps = {
       },
       {
         id: 'payOut',
-        title: 'Вывод средств',
+        title: 'payouts',
         type: 'item',
         url: '/payOut',
         icon: 'payOut',
@@ -54,7 +54,7 @@ const initialState: MenuProps = {
       },
       {
         id: 'massPayOut',
-        title: 'Массовые выплаты',
+        title: 'massPayouts',
         type: 'item',
         url: '/massPayOut',
         icon: 'massPayOut',

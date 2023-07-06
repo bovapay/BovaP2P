@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -45,7 +45,7 @@ const Navigation = () => {
     });
 
     if (getMenu?.id !== undefined && !isFound) {
-      menuItem.items.splice(0, 0, getMenu);
+      menuItem.items.splice(0, 1, getMenu);
       setMenuItems(menuItem);
     }
   };

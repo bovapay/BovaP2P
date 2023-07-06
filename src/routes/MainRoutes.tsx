@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import { Children, lazy } from 'react';
 
 // project import
 import MainLayout from 'layout/MainLayout';
@@ -10,6 +10,7 @@ import AuthGuard from 'utils/route-guard/AuthGuard';
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
 const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
 const Transactions = Loadable(lazy(() => import('pages/transactions')));
+const Transaction = Loadable(lazy(() => import('pages/transaction')));
 
 // render - widget
 const WidgetStatistics = Loadable(lazy(() => import('pages/widget/statistics')));
@@ -139,6 +140,10 @@ const MainRoutes = {
             {
               path: 'transactions',
               element: <Transactions />
+            },
+            {
+              path: 'transaction/:id',
+              element: <Transaction />
             },
             {
               path: 'disputes',

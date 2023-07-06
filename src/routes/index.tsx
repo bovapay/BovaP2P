@@ -7,7 +7,10 @@ import { useRoutes } from 'react-router-dom';
 import ComponentsRoutes from './ComponentsRoutes';
 import LoginRoutes from './LoginRoutes';
 import MainRoutes from './MainRoutes';
+import Loadable from 'components/Loadable';
+import { lazy } from 'react';
 
+const Error404 = Loadable(lazy(() => import('pages/maintenance/404')));
 // render - landing page
 // const PagesLanding = Loadable(lazy(() => import('pages/landing')));
 
@@ -27,6 +30,10 @@ export default function ThemeRoutes() {
     // },
     LoginRoutes,
     ComponentsRoutes,
-    MainRoutes
+    MainRoutes,
+    {
+      path: '/*',
+      element: <Error404 />
+    }
   ]);
 }

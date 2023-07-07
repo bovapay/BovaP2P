@@ -1,10 +1,10 @@
-import { useMemo, useState } from 'react';
+import { FC, Fragment, useCallback, useMemo, useState } from 'react';
 
 // material-ui
 import { Box, Chip, LinearProgress, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 // third-party
-import { useTable, useFilters, useGlobalFilter, Column, HeaderGroup, Cell } from 'react-table';
+import { useTable, useFilters, useGlobalFilter, Column, HeaderGroup, Cell, Row, useExpanded } from 'react-table';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -16,19 +16,40 @@ import { GlobalFilter, DefaultColumnFilter, SelectColumnFilter, NumberRangeColum
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { transformCurrencyValue } from 'utils/transformCurrencyValue';
-import { useNavigate } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ruLocale from 'date-fns/locale/ru';
+import ExpandingUserDetail from 'sections/tables/react-table/ExpandingUserDetail';
+import { DownOutlined, RightOutlined } from '@ant-design/icons';
+import MassPayoutDetail from './details';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data, update }: { columns: Column[]; data: []; update: () => void }) {
+function ReactTable({
+  columns,
+  data,
+  update,
+  renderRowSubComponent
+}: {
+  columns: Column[];
+  data: [];
+  update: () => void;
+  renderRowSubComponent: FC<any>;
+}) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
   const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
-  const navigate = useNavigate();
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state, preGlobalFilteredRows, setGlobalFilter } = useTable(
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state,
+    preGlobalFilteredRows,
+    setGlobalFilter,
+    visibleColumns
+  } = useTable(
     {
       columns,
       data,
@@ -37,7 +58,8 @@ function ReactTable({ columns, data, update }: { columns: Column[]; data: []; up
       filterTypes
     },
     useGlobalFilter,
-    useFilters
+    useFilters,
+    useExpanded
   );
 
   const sortingRow = rows;
@@ -91,6 +113,7 @@ function ReactTable({ columns, data, update }: { columns: Column[]; data: []; up
           }
           scrollThreshold={0.5}
           scrollableTarget="scrollableDiv"
+          style={{ width: 'visible' }}
         >
           <Table {...getTableProps()}>
             <TableHead sx={{ borderTopWidth: 2 }}>
@@ -115,17 +138,17 @@ function ReactTable({ columns, data, update }: { columns: Column[]; data: []; up
               {sortingRow.length > 0 ? (
                 sortingRow.map((row, i) => {
                   prepareRow(row);
+
+                  const rowProps = row.getRowProps();
                   return (
-                    <TableRow sx={{ textDecoration: 'none' }} {...row.getRowProps()}>
-                      {row.cells.map((cell: Cell) => (
-                        <TableCell
-                          onClick={() => navigate(`/transaction/${row.id}`)}
-                          {...cell.getCellProps([{ className: cell.column.className }])}
-                        >
-                          {cell.render('Cell')}
-                        </TableCell>
-                      ))}
-                    </TableRow>
+                    <Fragment key={i}>
+                      <TableRow sx={{ textDecoration: 'none' }} {...row.getRowProps()}>
+                        {row.cells.map((cell: Cell) => (
+                          <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
+                        ))}
+                      </TableRow>
+                      {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
+                    </Fragment>
                   );
                 })
               ) : (
@@ -156,6 +179,20 @@ const Transactions = () => {
     () =>
       [
         {
+          Header: () => null,
+          id: 'expander',
+          className: 'cell-center',
+          Cell: ({ row }: { row: Row }) => {
+            const collapseIcon = row.isExpanded ? <DownOutlined /> : <RightOutlined />;
+            return (
+              <Box sx={{ fontSize: '0.75rem', color: 'text.secondary', textAlign: 'center' }} {...row.getToggleRowExpandedProps()}>
+                {collapseIcon}
+              </Box>
+            );
+          },
+          SubCell: () => null
+        },
+        {
           Header: 'ID',
           accessor: 'id',
           filter: 'fuzzyText',
@@ -163,7 +200,7 @@ const Transactions = () => {
         },
         {
           Header: 'СУММА (USDT)',
-          accessor: 'firstName',
+          accessor: 'lastName',
           disableFilters: true,
           Cell: ({ value }: { value: string }) => {
             return transformCurrencyValue(Math.random() * 10, { currency: 'USDT' });
@@ -180,7 +217,7 @@ const Transactions = () => {
         },
         {
           Header: 'ПОЛУЧАТЕЛЬ',
-          accessor: 'lastName',
+          accessor: 'firstName',
           filter: 'fuzzyText'
         },
         {
@@ -196,7 +233,7 @@ const Transactions = () => {
                 return <Chip color="success" label="Зачислена" size="small" variant="light" />;
               case 'Single':
               default:
-                return <Chip color="info" label="Оплачена" size="small" variant="light" />;
+                return <Chip color="info" label="В процессе" size="small" variant="light" />;
             }
           }
         },
@@ -212,11 +249,11 @@ const Transactions = () => {
     []
   );
 
+  const renderRowSubComponent = useCallback(({ row: { id } }: { row: Row<{}> }) => <MassPayoutDetail data={data[Number(id)]} />, [data]);
+
   return (
     <MainCard content={false} border={false}>
-      <ScrollX>
-        <ReactTable columns={columns} data={scrollData} update={fetchMoreData} />
-      </ScrollX>
+      <ReactTable columns={columns} data={scrollData} update={fetchMoreData} renderRowSubComponent={renderRowSubComponent} />
     </MainCard>
   );
 };

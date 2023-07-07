@@ -5,7 +5,16 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'store';
 
 // assets
-import { DashboardOutlined, GoldOutlined, HomeOutlined, TransactionOutlined, PayCircleOutlined } from '@ant-design/icons';
+import {
+  DashboardOutlined,
+  GoldOutlined,
+  HomeOutlined,
+  TransactionOutlined,
+  PayCircleOutlined,
+  WarningOutlined,
+  TeamOutlined,
+  WalletOutlined
+} from '@ant-design/icons';
 
 // type
 import { NavItemType } from 'types/menu';
@@ -14,7 +23,10 @@ const icons = {
   dashboard: DashboardOutlined,
   components: GoldOutlined,
   home: HomeOutlined,
-  transactions: TransactionOutlined
+  transactions: TransactionOutlined,
+  payOut: WalletOutlined,
+  massPayOut: TeamOutlined,
+  disputes: WarningOutlined
 };
 
 // ==============================|| MENU ITEMS - API ||============================== //

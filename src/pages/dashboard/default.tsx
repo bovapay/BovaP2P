@@ -80,8 +80,10 @@ const DashboardDefault = () => {
           </Box>
         </MainCard>
       </Grid>
-      <PayOuts />
-      <MassPayOuts />
+      <Grid item container rowSpacing={4.5} columnSpacing={2.75} sx={{ alignItems: 'stretch' }}>
+        <PayOuts />
+        <MassPayOuts />
+      </Grid>
     </Grid>
   );
 };

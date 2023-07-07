@@ -1,20 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
-
-// material-ui
-import { CardContent, Grid, Link, Table, TableCell, TableContainer, Typography, TableHead, TableRow, TableBody, Chip } from '@mui/material';
-
-// project imports
+import { Grid, Link, Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Chip } from '@mui/material';
 import MainCard from 'components/MainCard';
-import Avatar from 'components/@extended/Avatar';
-
-// assets
-import { TwitterOutlined, ShoppingOutlined, CheckOutlined, UserOutlined, CreditCardOutlined } from '@ant-design/icons';
-import { ReactComponent as CardIcon } from 'assets/icons/credit-card-download.svg';
-// import TableHead from 'themes/overrides/TableHead';
-// import TableRow from 'themes/overrides/TableRow';
-// import TableBody from 'themes/overrides/TableBody';
 import { LabelKeyObject } from 'react-csv/components/CommonPropTypes';
-import OrderTable from 'sections/dashboard/default/OrdersTable';
 
 // ==========================|| DATA WIDGET - LATEST MESSAGES ||========================== //
 function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
@@ -40,7 +27,7 @@ export const header: LabelKeyObject[] = [
 ];
 
 const MassPayOuts = () => (
-  <Grid item md={6}>
+  <Grid item md={6} sx={{ stretch: '100%', height: '100%' }}>
     {/* <MainCard title="Выводы средств" content={false} secondary={}>
       <CardContent></CardContent>
     </MainCard> */}
@@ -52,6 +39,7 @@ const MassPayOuts = () => (
           Смотреть всё
         </Link>
       }
+      sx={{ stretch: '100%', height: '100%' }}
     >
       <TableContainer>
         <Table sx={{ minWidth: 350 }} aria-label="simple table">
@@ -65,7 +53,7 @@ const MassPayOuts = () => (
           </TableHead>
           <TableBody>
             {rows.map((row, index) => (
-              <TableRow hover key={index}>
+              <TableRow hover key={index} sx={{ borderBottom: '1px solid #f0f0f0' }}>
                 <TableCell sx={{ pl: 3, py: 2 }} component="th" scope="row">
                   {row.name}
                 </TableCell>

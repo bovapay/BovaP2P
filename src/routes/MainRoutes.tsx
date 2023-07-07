@@ -1,4 +1,4 @@
-import { Children, lazy } from 'react';
+import { lazy } from 'react';
 
 // project import
 import MainLayout from 'layout/MainLayout';
@@ -11,6 +11,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
 const Transactions = Loadable(lazy(() => import('pages/transactions')));
 const Transaction = Loadable(lazy(() => import('pages/transaction')));
+const MassPayouts = Loadable(lazy(() => import('pages/mass-payouts')));
 
 // render - widget
 const WidgetStatistics = Loadable(lazy(() => import('pages/widget/statistics')));
@@ -155,7 +156,7 @@ const MainRoutes = {
             },
             {
               path: 'massPayOut',
-              element: <></>
+              element: <MassPayouts />
             },
             {
               path: 'analytics',

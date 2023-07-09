@@ -1,10 +1,10 @@
-import { FC, Fragment, useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 // material-ui
 import { Box, Chip, LinearProgress, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 // third-party
-import { useTable, useFilters, useGlobalFilter, Column, HeaderGroup, Cell, Row, useExpanded } from 'react-table';
+import { useTable, useFilters, useGlobalFilter, Column, HeaderGroup, Cell } from 'react-table';
 
 // project import
 import MainCard from 'components/MainCard';
@@ -16,40 +16,19 @@ import { GlobalFilter, DefaultColumnFilter, SelectColumnFilter, NumberRangeColum
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { transformCurrencyValue } from 'utils/transformCurrencyValue';
+import { useNavigate } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ruLocale from 'date-fns/locale/ru';
-import ExpandingUserDetail from 'sections/tables/react-table/ExpandingUserDetail';
-import { DownOutlined, RightOutlined } from '@ant-design/icons';
-import MassPayoutDetail from './details';
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({
-  columns,
-  data,
-  update,
-  renderRowSubComponent
-}: {
-  columns: Column[];
-  data: [];
-  update: () => void;
-  renderRowSubComponent: FC<any>;
-}) {
+function ReactTable({ columns, data, update }: { columns: Column[]; data: []; update: () => void }) {
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
   const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
+  const navigate = useNavigate();
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    state,
-    preGlobalFilteredRows,
-    setGlobalFilter,
-    visibleColumns
-  } = useTable(
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow, state, preGlobalFilteredRows, setGlobalFilter } = useTable(
     {
       columns,
       data,
@@ -58,8 +37,7 @@ function ReactTable({
       filterTypes
     },
     useGlobalFilter,
-    useFilters,
-    useExpanded
+    useFilters
   );
 
   const sortingRow = rows;
@@ -113,7 +91,6 @@ function ReactTable({
           }
           scrollThreshold={0.5}
           scrollableTarget="scrollableDiv"
-          style={{ width: 'visible' }}
         >
           <Table {...getTableProps()}>
             <TableHead sx={{ borderTopWidth: 2 }}>
@@ -138,17 +115,17 @@ function ReactTable({
               {sortingRow.length > 0 ? (
                 sortingRow.map((row, i) => {
                   prepareRow(row);
-
-                  const rowProps = row.getRowProps();
                   return (
-                    <Fragment key={i}>
-                      <TableRow sx={{ textDecoration: 'none' }} {...row.getRowProps()}>
-                        {row.cells.map((cell: Cell) => (
-                          <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
-                        ))}
-                      </TableRow>
-                      {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
-                    </Fragment>
+                    <TableRow sx={{ textDecoration: 'none' }} {...row.getRowProps()}>
+                      {row.cells.map((cell: Cell) => (
+                        <TableCell
+                          onClick={() => navigate(`/transaction/${row.id}`)}
+                          {...cell.getCellProps([{ className: cell.column.className }])}
+                        >
+                          {cell.render('Cell')}
+                        </TableCell>
+                      ))}
+                    </TableRow>
                   );
                 })
               ) : (
@@ -164,8 +141,8 @@ function ReactTable({
 
 // ==============================|| REACT TABLE - FILTERING ||============================== //
 
-const MassPayouts = () => {
-  const data = useMemo(() => makeData(50), []);
+const Disputes = () => {
+  const data = useMemo(() => makeData(10), []);
 
   const [scrollData, setScrollData] = useState(data);
 
@@ -179,20 +156,6 @@ const MassPayouts = () => {
     () =>
       [
         {
-          Header: () => null,
-          id: 'expander',
-          className: 'cell-center',
-          Cell: ({ row }: { row: Row }) => {
-            const collapseIcon = row.isExpanded ? <DownOutlined /> : <RightOutlined />;
-            return (
-              <Box sx={{ fontSize: '0.75rem', color: 'text.secondary', textAlign: 'center' }} {...row.getToggleRowExpandedProps()}>
-                {collapseIcon}
-              </Box>
-            );
-          },
-          SubCell: () => null
-        },
-        {
           Header: 'ID',
           accessor: 'id',
           filter: 'fuzzyText',
@@ -200,7 +163,7 @@ const MassPayouts = () => {
         },
         {
           Header: 'СУММА (USDT)',
-          accessor: 'lastName',
+          accessor: 'firstName',
           disableFilters: true,
           Cell: ({ value }: { value: string }) => {
             return transformCurrencyValue(Math.random() * 10, { currency: 'USDT' });
@@ -217,7 +180,7 @@ const MassPayouts = () => {
         },
         {
           Header: 'ПОЛУЧАТЕЛЬ',
-          accessor: 'firstName',
+          accessor: 'lastName',
           filter: 'fuzzyText'
         },
         {
@@ -228,12 +191,12 @@ const MassPayouts = () => {
           Cell: ({ value }: { value: string }) => {
             switch (value) {
               case 'Complicated':
-                return <Chip color="error" label="Не зачислена" size="small" variant="light" />;
+                return <Chip color="error" label="Спор отклонён" size="small" variant="light" />;
               case 'Relationship':
-                return <Chip color="success" label="Зачислена" size="small" variant="light" />;
+                return <Chip color="success" label="Спор принят" size="small" variant="light" />;
               case 'Single':
               default:
-                return <Chip color="info" label="В процессе" size="small" variant="light" />;
+                return <Chip color="info" label="Оспаривается" size="small" variant="light" />;
             }
           }
         },
@@ -249,13 +212,13 @@ const MassPayouts = () => {
     []
   );
 
-  const renderRowSubComponent = useCallback(({ row: { id } }: { row: Row<{}> }) => <MassPayoutDetail data={data[Number(id)]} />, [data]);
-
   return (
     <MainCard content={false} border={false}>
-      <ReactTable columns={columns} data={scrollData} update={fetchMoreData} renderRowSubComponent={renderRowSubComponent} />
+      <ScrollX>
+        <ReactTable columns={columns} data={scrollData} update={fetchMoreData} />
+      </ScrollX>
     </MainCard>
   );
 };
 
-export default MassPayouts;
+export default Disputes;

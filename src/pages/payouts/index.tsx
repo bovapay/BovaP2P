@@ -18,7 +18,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { transformCurrencyValue } from 'utils/transformCurrencyValue';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ruLocale from 'date-fns/locale/ru';
-import ExpandingUserDetail from 'sections/tables/react-table/ExpandingUserDetail';
 import { DownOutlined, RightOutlined } from '@ant-design/icons';
 import MassPayoutDetail from './details';
 
@@ -164,7 +163,7 @@ function ReactTable({
 
 // ==============================|| REACT TABLE - FILTERING ||============================== //
 
-const MassPayouts = () => {
+const Payouts = () => {
   const data = useMemo(() => makeData(50), []);
 
   const [scrollData, setScrollData] = useState(data);
@@ -258,4 +257,4 @@ const MassPayouts = () => {
   );
 };
 
-export default MassPayouts;
+export default Payouts;

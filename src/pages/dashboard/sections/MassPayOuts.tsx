@@ -35,7 +35,7 @@ const MassPayOuts = () => (
       content={false}
       title="Массовые выплаты"
       secondary={
-        <Link component={RouterLink} to="#" color="primary">
+        <Link component={RouterLink} to="/massPayOut" color="primary">
           Смотреть всё
         </Link>
       }

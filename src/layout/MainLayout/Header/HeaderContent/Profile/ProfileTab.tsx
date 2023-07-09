@@ -20,7 +20,7 @@ const ProfileTab = ({ handleLogout }: Props) => {
 
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
-      <ListItemButton selected={selectedIndex === 0} onClick={(event: React.MouseEvent<HTMLDivElement>) => handleListItemClick(event, 0)}>
+      {/* <ListItemButton selected={selectedIndex === 0} onClick={(event: React.MouseEvent<HTMLDivElement>) => handleListItemClick(event, 0)}>
         <ListItemIcon>
           <EditOutlined />
         </ListItemIcon>
@@ -44,12 +44,12 @@ const ProfileTab = ({ handleLogout }: Props) => {
           <WalletOutlined />
         </ListItemIcon>
         <ListItemText primary="Billing" />
-      </ListItemButton>
+      </ListItemButton> */}
       <ListItemButton selected={selectedIndex === 2} onClick={handleLogout}>
         <ListItemIcon>
           <LogoutOutlined />
         </ListItemIcon>
-        <ListItemText primary="Logout" />
+        <ListItemText primary="Выход" />
       </ListItemButton>
     </List>
   );

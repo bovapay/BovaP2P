@@ -41,8 +41,8 @@ const HeaderContent = () => {
       {downLG && <Box sx={{ width: '100%', ml: 1 }} />}
 
       {/* <Notification />
-      <Message />
-      <Customization /> */}
+      <Message /> */}
+      {/* <Customization /> */}
       {!downLG && <Profile />}
       {downLG && <MobileSection />}
     </>

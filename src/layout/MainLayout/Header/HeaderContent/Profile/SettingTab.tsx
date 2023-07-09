@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
 // material-ui
-import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { FormControlLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Switch } from '@mui/material';
 
-// assets
+import { ThemeMode } from 'types/config';
 import { CommentOutlined, LockOutlined, QuestionCircleOutlined, UserOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import useConfig from 'hooks/useConfig';
 
 // ==============================|| HEADER PROFILE - SETTING TAB ||============================== //
 
@@ -14,9 +16,23 @@ const SettingTab = () => {
     setSelectedIndex(index);
   };
 
+  const theme = useTheme();
+
+  const { mode, onChangeMode } = useConfig();
+
+  const handleModeChange = () => {
+    onChangeMode(mode === 'dark' ? ('light' as ThemeMode) : ('dark' as ThemeMode));
+  };
+
   return (
     <List component="nav" sx={{ p: 0, '& .MuiListItemIcon-root': { minWidth: 32 } }}>
-      <ListItemButton selected={selectedIndex === 0} onClick={(event: React.MouseEvent<HTMLDivElement>) => handleListItemClick(event, 0)}>
+      <ListItem>
+        <FormControlLabel
+          control={<Switch onClick={handleModeChange} checked={mode === 'dark'} />}
+          label={'Тёмная тема'}
+        ></FormControlLabel>
+      </ListItem>
+      {/* <ListItemButton selected={selectedIndex === 0} onClick={(event: React.MouseEvent<HTMLDivElement>) => handleListItemClick(event, 0)}>
         <ListItemIcon>
           <QuestionCircleOutlined />
         </ListItemIcon>
@@ -45,7 +61,7 @@ const SettingTab = () => {
           <UnorderedListOutlined />
         </ListItemIcon>
         <ListItemText primary="History" />
-      </ListItemButton>
+      </ListItemButton> */}
     </List>
   );
 };

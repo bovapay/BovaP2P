@@ -12,6 +12,8 @@ const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics
 const Transactions = Loadable(lazy(() => import('pages/transactions')));
 const Transaction = Loadable(lazy(() => import('pages/transaction')));
 const MassPayouts = Loadable(lazy(() => import('pages/mass-payouts')));
+const Disputes = Loadable(lazy(() => import('pages/disputes')));
+const Payouts = Loadable(lazy(() => import('pages/payouts')));
 
 // render - widget
 const WidgetStatistics = Loadable(lazy(() => import('pages/widget/statistics')));
@@ -148,11 +150,11 @@ const MainRoutes = {
             },
             {
               path: 'disputes',
-              element: <></>
+              element: <Disputes />
             },
             {
               path: 'payOut',
-              element: <></>
+              element: <Payouts />
             },
             {
               path: 'massPayOut',

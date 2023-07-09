@@ -19,7 +19,7 @@ const PayOuts = () => (
       title="Выводы средств"
       content={false}
       secondary={
-        <Link component={RouterLink} to="#" color="primary">
+        <Link component={RouterLink} to="/payOut" color="primary">
           Смотреть всё
         </Link>
       }
@@ -39,7 +39,7 @@ const PayOuts = () => (
               content: '""',
               position: 'absolute',
               top: 8,
-              left: 148,
+              left: 153,
               width: 2,
               height: '100%',
               background: '#ebebeb',
@@ -49,7 +49,37 @@ const PayOuts = () => (
         >
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item>
+              <Grid item sx={{ width: 164 }}>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={8}>
+                    <Typography align="left" variant="caption" color="secondary" sx={{ width: '100%' }}>
+                      Сегодня, 22:33
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Avatar color="success">
+                      <CreditCardOutlined />
+                    </Avatar>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs zeroMinWidth>
+                <Grid container spacing={1}>
+                  <Grid item xs={12}>
+                    <Typography component="div" align="left" variant="subtitle1">
+                      + 10 000 USDT TRC-20
+                    </Typography>
+                    <Typography color="secondary" align="left" variant="caption">
+                      THErAdMho27E8PxDVwQDQwmN2z1DH8nnVK
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              <Grid item sx={{ width: 164 }}>
                 <Grid container spacing={2} alignItems="center">
                   <Grid item xs={8}>
                     <Typography align="left" variant="caption" color="secondary">
@@ -79,7 +109,7 @@ const PayOuts = () => (
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item>
+              <Grid item sx={{ width: 164 }}>
                 <Grid container spacing={2} alignItems="center">
                   <Grid item xs={8}>
                     <Typography align="left" variant="caption" color="secondary">
@@ -109,7 +139,7 @@ const PayOuts = () => (
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item>
+              <Grid item sx={{ width: 164 }}>
                 <Grid container spacing={2} alignItems="center">
                   <Grid item xs={8}>
                     <Typography align="left" variant="caption" color="secondary">
@@ -139,37 +169,7 @@ const PayOuts = () => (
           </Grid>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item>
-                <Grid container spacing={2} alignItems="center">
-                  <Grid item xs={8}>
-                    <Typography align="left" variant="caption" color="secondary">
-                      Сегодня, 22:33
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4}>
-                    <Avatar color="success">
-                      <CreditCardOutlined />
-                    </Avatar>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs zeroMinWidth>
-                <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                    <Typography component="div" align="left" variant="subtitle1">
-                      + 10 000 USDT TRC-20
-                    </Typography>
-                    <Typography color="secondary" align="left" variant="caption">
-                      THErAdMho27E8PxDVwQDQwmN2z1DH8nnVK
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container spacing={2}>
-              <Grid item>
+              <Grid item sx={{ width: 164 }}>
                 <Grid container spacing={2} alignItems="center">
                   <Grid item xs={8}>
                     <Typography align="left" variant="caption" color="secondary">

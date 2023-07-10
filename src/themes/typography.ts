@@ -70,7 +70,7 @@ const Typography = (mode: ThemeMode, fontFamily: FontFamily, theme: Theme): Typo
     lineHeight: 1.66
   },
   button: {
-    textTransform: 'capitalize'
+    // textTransform: 'capitalize'
   }
 });
 

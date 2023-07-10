@@ -15,16 +15,18 @@ import { getInvoiceSingleList } from 'store/reducers/invoice';
 // assets
 import { ShareAltOutlined } from '@ant-design/icons';
 import { currencySign } from 'utils/transformCurrencyValue';
+import CreateDispute from 'pages/create-dispute/create-dispute';
 
 // ==============================|| INVOICE - Transaction ||============================== //
 
 const Transaction = () => {
   const theme = useTheme();
   const { id } = useParams();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const { country, list } = useSelector((state) => state.invoice);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isCreateDisputeVisible, setIsCreateDisputeVisible] = useState(false);
 
   useEffect(() => {
     dispatch(getInvoiceSingleList(Number(id))).then(() => setLoading(false));
@@ -57,12 +59,13 @@ const Transaction = () => {
 
   return (
     <>
+      <CreateDispute isOpen={isCreateDisputeVisible} handleClose={() => setIsCreateDisputeVisible(false)} />
       <MainCard content={false}>
         <Stack spacing={2.5}>
           <Box sx={{ p: 2.5, pb: 0 }}>
             <MainCard content={false} sx={{ p: 1.25, bgcolor: 'primary.lighter', borderColor: theme.palette.primary[100] }}>
               <Stack direction="row" justifyContent="space-between" alignItems={'center'} spacing={1}>
-                <Typography fontSize={20} color={theme.palette.primary.main} fontWeight={500}>
+                <Typography fontSize={20} color={theme.palette.primary.main} fontWeight={600}>
                   {currencySign.RUB} 500
                 </Typography>
                 {/* <IconButton onClick={() => navigation(`/apps/invoice/edit/${id}`)}>
@@ -92,7 +95,7 @@ const Transaction = () => {
               <Grid item xs={12}>
                 <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between">
                   <Box>
-                    <Stack direction="row" spacing={2}>
+                    <Stack direction="row" spacing={2} mb={0.5}>
                       {/* <LogoSection /> */}
                       <Chip label="Зачислена" variant="light" color="success" size="small" />
                     </Stack>
@@ -119,11 +122,19 @@ const Transaction = () => {
                     <Stack spacing={1}>
                       <Typography variant="h5">Информация о транзакции:</Typography>
                       <FormControl sx={{ width: '100%' }}>
-                        <Typography color="secondary">Сумма в USDT: {currencySign.USDT} 12</Typography>
-                        <Typography color="secondary">Курс USDT/RUB: 88.82</Typography>
-                        <Typography color="secondary">Платёжное решение: P2P/RUB</Typography>
-                        <Typography color="secondary">Валюта: RUB</Typography>
-                        <Link sx={{ fontWeight: 500 }}>Ссылка на платёж</Link>
+                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
+                          Сумма в USDT: {currencySign.USDT} 12
+                        </Typography>
+                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
+                          Курс USDT/RUB: 88.82
+                        </Typography>
+                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
+                          Платёжное решение: P2P/RUB
+                        </Typography>
+                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
+                          Валюта: RUB
+                        </Typography>
+                        <Link sx={{ lineHeight: 1.8, fontWeight: 500 }}>Ссылка на платёж</Link>
                       </FormControl>
                     </Stack>
                   </MainCard>
@@ -133,9 +144,15 @@ const Transaction = () => {
                     <Stack spacing={1}>
                       <Typography variant="h5">Получатель:</Typography>
                       <FormControl sx={{ width: '100%' }}>
-                        <Typography color="secondary">Sberbank</Typography>
-                        <Typography color="secondary">4276 43** **** 2416</Typography>
-                        <Typography color="secondary">Иван Иванович И</Typography>
+                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
+                          Sberbank
+                        </Typography>
+                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
+                          4276 43** **** 2416
+                        </Typography>
+                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
+                          Иван Иванович И
+                        </Typography>
                       </FormControl>
                     </Stack>
                   </MainCard>
@@ -152,7 +169,7 @@ const Transaction = () => {
           </Box>
           <Stack direction="row" spacing={2} sx={{ p: 2.5, a: { textDecoration: 'none', color: 'inherit' } }}>
             {/* <PDFDownloadLink document={<ExportPDFView list={list} />} fileName={`${list?.invoice_id}-${list?.customer_name}.pdf`}> */}
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={() => setIsCreateDisputeVisible(true)}>
               Оспорить транзакцию
             </Button>
             {/* </PDFDownloadLink> */}

@@ -135,7 +135,7 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
                 </Stack>
               </Grid>
 
-              <Grid item xs={12} sx={{ mt: -1 }}>
+              {/* <Grid item xs={12} sx={{ mt: -1 }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
                   <FormControlLabel
                     control={
@@ -148,12 +148,12 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
                       />
                     }
                     label={<Typography variant="h6">Запомнить меня</Typography>}
-                  />
-                  {/* <Link variant="h6" component={RouterLink} to={isDemo ? '/auth/forgot-password' : '/forgot-password'} color="text.primary">
+                  /> */}
+              {/* <Link variant="h6" component={RouterLink} to={isDemo ? '/auth/forgot-password' : '/forgot-password'} color="text.primary">
                     Forgot Password?
                   </Link> */}
-                </Stack>
-              </Grid>
+              {/* </Stack>
+              </Grid> */}
               {errors.submit && (
                 <Grid item xs={12}>
                   <FormHelperText error>{errors.submit}</FormHelperText>

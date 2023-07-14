@@ -49,10 +49,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactElement }) =>
             type: LOGIN,
             payload: {
               isLoggedIn: true,
-              user: {
-                id: user?.sub,
-                email: user?.email
-              }
+              user: null
             }
           });
         } else {
@@ -80,13 +77,7 @@ export const Auth0Provider = ({ children }: { children: React.ReactElement }) =>
         type: LOGIN,
         payload: {
           isLoggedIn: true,
-          user: {
-            id: user?.sub,
-            avatar: user?.picture,
-            email: user?.email,
-            name: user?.name,
-            tier: 'Premium'
-          }
+          user: null
         }
       });
     }

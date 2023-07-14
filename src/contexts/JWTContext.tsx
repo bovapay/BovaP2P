@@ -12,7 +12,7 @@ import authReducer from 'store/reducers/auth';
 import Loader from 'components/Loader';
 import axios from 'utils/axios';
 import { KeyedObject } from 'types/root';
-import { AuthProps, JWTContextType } from 'types/auth';
+import { AuthProps, JWTContextType, UserProfile } from 'types/auth';
 
 const chance = new Chance();
 
@@ -57,13 +57,12 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
         const serviceToken = window.localStorage.getItem('serviceToken');
         if (serviceToken && verifyToken(serviceToken)) {
           setSession(serviceToken);
-          const response = await axios.get('/api/account/me');
-          const { user } = response.data;
+          const response = await axios.get('user');
           dispatch({
             type: LOGIN,
             payload: {
               isLoggedIn: true,
-              user
+              user: response.data
             }
           });
         } else {
@@ -83,14 +82,18 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await axios.post('/api/account/login', { email, password });
-    const { serviceToken, user } = response.data;
-    setSession(serviceToken);
+    // const response = await axios.post('/api/account/login', { email, password });
+    const response = await axios.post('auth/user_token', { auth: { email: email, password: password } });
+    const { access_token } = response.data;
+    setSession(access_token);
+    const userResponse: any = await axios.get('user');
+    console.log(userResponse.data);
+
     dispatch({
       type: LOGIN,
       payload: {
         isLoggedIn: true,
-        user
+        user: userResponse.data as UserProfile
       }
     });
   };
@@ -98,7 +101,7 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
   const register = async (email: string, password: string, firstName: string, lastName: string) => {
     // todo: this flow need to be recode as it not verified
     const id = chance.bb_pin();
-    const response = await axios.post('/api/account/register', {
+    const response = await axios.post('dashboard/v1/api/account/register', {
       id,
       email,
       password,

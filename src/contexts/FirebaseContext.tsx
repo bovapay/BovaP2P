@@ -47,12 +47,7 @@ export const FirebaseProvider = ({ children }: { children: React.ReactElement })
             type: LOGIN,
             payload: {
               isLoggedIn: true,
-              user: {
-                id: user.uid,
-                email: user.email!,
-                name: user.displayName || 'Stebin Ben',
-                role: 'UI/UX Designer'
-              }
+              user: null
             }
           });
         } else {

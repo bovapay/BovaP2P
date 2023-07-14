@@ -111,7 +111,7 @@ function ReactTable({
               <LinearProgress />
             </Box>
           }
-          scrollThreshold={0.5}
+          // scrollThreshold={0.5}
           scrollableTarget="scrollableDiv"
           style={{ width: 'visible' }}
         >
@@ -171,7 +171,7 @@ const MassPayouts = () => {
 
   const fetchMoreData = () => {
     setTimeout(() => {
-      setScrollData(scrollData.concat(makeData(10)) as []);
+      setScrollData(scrollData.concat(makeData(30)) as []);
     }, 1500);
   };
 

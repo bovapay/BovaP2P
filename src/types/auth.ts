@@ -10,13 +10,52 @@ export type GuardProps = {
 };
 
 export type UserProfile = {
-  id?: string;
-  email?: string;
-  avatar?: string;
-  image?: string;
-  name?: string;
-  role?: string;
-  tier?: string;
+  id: number;
+  name: string;
+  avatar: string;
+  api_secret: string;
+  usdt_address: string;
+  auto_withdraw: string;
+  login: string;
+  email: string;
+  conversion: number;
+  last_dispute_withdraw: {
+    amount: number;
+    usdt_amount: number;
+    created_at: null;
+  };
+  sum_opened_disputes: string;
+  count_opened_disputes: number;
+  count_accepted_disputes: number;
+  created_at: string;
+  updated_at: string;
+  general_balances: {
+    sum_rub: string;
+    sum_uah: string;
+  };
+  dispute_balance: {
+    id: number;
+    amount: string;
+    currency: string;
+    user_id: number;
+    created_at: string;
+    updated_at: string;
+    deleted_at: null;
+  };
+  p2p_balance: {
+    amount: string;
+    usdt_amount: string;
+    currency: string;
+    created_at: string;
+    updated_at: string;
+  };
+  mass_balance: {
+    amount: string;
+    usdt_amount: string;
+    currency: string;
+    created_at: string;
+    updated_at: string;
+  };
 };
 
 export interface AuthProps {

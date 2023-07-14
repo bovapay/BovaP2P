@@ -48,9 +48,7 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
             type: LOGIN,
             payload: {
               isLoggedIn: true,
-              user: {
-                name: 'Betty'
-              }
+              user: null
             }
           });
         } else {
@@ -88,10 +86,7 @@ export const AWSCognitoProvider = ({ children }: { children: React.ReactElement 
           type: LOGIN,
           payload: {
             isLoggedIn: true,
-            user: {
-              email: authData.getUsername(),
-              name: 'John AWS'
-            }
+            user: null
           }
         });
       },

@@ -147,9 +147,7 @@ const Disputes = () => {
   const [scrollData, setScrollData] = useState(data);
 
   const fetchMoreData = () => {
-    setTimeout(() => {
-      setScrollData(scrollData.concat(makeData(10)) as []);
-    }, 1500);
+    setScrollData(scrollData.concat(makeData(100)) as []);
   };
 
   const columns = useMemo(

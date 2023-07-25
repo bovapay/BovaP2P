@@ -11,11 +11,14 @@ import MainCard from 'components/MainCard';
 
 // assets
 import { CheckOutlined } from '@ant-design/icons';
-import { currencySign } from 'utils/transformCurrencyValue';
+import { currencySign, transformCurrencyValue } from 'utils/transformCurrencyValue';
+import { IPayoutsItem } from 'store/api/payouts/payouts.types';
+import { typeTextSwitcher } from './item';
+import { parseDate } from 'utils/parseDate';
 
 // ==============================|| EXPANDING TABLE - USER DETAILS ||============================== //
 
-const MassPayoutDetail = ({ data }: any) => {
+const PayoutDetail = ({ data }: { data: IPayoutsItem }) => {
   const theme = useTheme();
   const matchDownMD = useMediaQuery(theme.breakpoints.down('md'));
 
@@ -34,8 +37,8 @@ const MassPayoutDetail = ({ data }: any) => {
                       <CheckOutlined />
                     </Avatar>
                     <Stack spacing={0.5} alignItems="center">
-                      <Typography variant="h5">Успешная выплата</Typography>
-                      <Typography color="secondary">#1</Typography>
+                      <Typography variant="h5">{typeTextSwitcher(data.type_of)}</Typography>
+                      <Typography color="secondary">{data.txid || 'Нет данных об id транзакции'}</Typography>
                     </Stack>
                   </Stack>
                 </Grid>
@@ -45,30 +48,24 @@ const MassPayoutDetail = ({ data }: any) => {
                 <Grid item xs={12}>
                   <Stack direction="row" justifyContent="space-around" alignItems="center">
                     <Stack spacing={0.5} alignItems="center">
-                      <Typography color="secondary">Сумма выплаты</Typography>
-                      <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                        {currencySign.RUB} 1 000
-                      </Typography>
-                    </Stack>
-                    <Divider orientation="vertical" flexItem />
-                    <Stack spacing={0.5} alignItems="center">
                       <Typography color="secondary">Валюта</Typography>
                       <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                        RUB
+                        {data.currency.toUpperCase()}
                       </Typography>
                     </Stack>
                     <Divider orientation="vertical" flexItem />
                     <Stack spacing={0.5} alignItems="center">
-                      <Typography color="secondary">Сумма в USDT</Typography>
+                      <Typography color="secondary">Сумма</Typography>
                       <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                        11,31
-                      </Typography>{' '}
+                        {transformCurrencyValue(data.amount ? +data.amount : 0, { currency: data.currency as 'rub' })}
+                      </Typography>
                     </Stack>
                     <Divider orientation="vertical" flexItem />
+
                     <Stack spacing={0.5} alignItems="center">
                       <Typography color="secondary">Курс</Typography>
                       <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                        88,88
+                        {transformCurrencyValue(data.rate_usdt ? +data.rate_usdt : 0)}
                       </Typography>{' '}
                     </Stack>
                   </Stack>
@@ -81,38 +78,14 @@ const MassPayoutDetail = ({ data }: any) => {
           </Grid>
           <Grid item xs={12} sm={6} md={6} xl={6} sx={{ stretch: '100%' }}>
             <Stack spacing={2.5} sx={{ height: '100%' }}>
-              <MainCard title="Информация о выплате" sx={{ height: '100%' }}>
+              <MainCard title="Информация об операции" sx={{ height: '100%' }}>
                 <List sx={{ py: 0, height: '100%' }}>
                   <ListItem divider={!matchDownMD}>
                     <Grid container spacing={3}>
                       <Grid item xs={12} md={6}>
                         <Stack spacing={0.5}>
                           <Typography color="secondary">Дата создания</Typography>
-                          <Typography>23.03, 15:45</Typography>
-                        </Stack>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Stack spacing={0.5}>
-                          <Typography color="secondary">Дата обновления статуса</Typography>
-                          <Typography>Зачислена: 23.03, 15:55</Typography>
-                        </Stack>
-                      </Grid>
-                    </Grid>
-                  </ListItem>
-                  <ListItem divider={!matchDownMD}>
-                    <Grid container spacing={3}>
-                      <Grid item xs={12} md={6}>
-                        <Stack spacing={0.5}>
-                          <Typography color="secondary">Получатель</Typography>
-                          <Typography>Павел Андреевич П.</Typography>
-                        </Stack>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <Stack spacing={0.5}>
-                          <Typography color="secondary">Карта получателя</Typography>
-                          <Typography>
-                            <PatternFormat displayType="text" format="#### ##** **** ####" mask="_" defaultValue={'4276543466665341'} />
-                          </Typography>
+                          <Typography>{parseDate(data.created_at)}</Typography>
                         </Stack>
                       </Grid>
                     </Grid>
@@ -120,7 +93,7 @@ const MassPayoutDetail = ({ data }: any) => {
                   <ListItem>
                     <Stack spacing={0.5}>
                       <Typography color="secondary">Комментарий</Typography>
-                      <Typography>Отстуствует</Typography>
+                      <Typography>{data.comment || 'Отстуствует'}</Typography>
                     </Stack>
                   </ListItem>
 
@@ -137,4 +110,4 @@ const MassPayoutDetail = ({ data }: any) => {
   );
 };
 
-export default MassPayoutDetail;
+export default PayoutDetail;

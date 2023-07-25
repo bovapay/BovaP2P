@@ -10,7 +10,6 @@ import {
   GoldOutlined,
   HomeOutlined,
   TransactionOutlined,
-  PayCircleOutlined,
   WarningOutlined,
   TeamOutlined,
   WalletOutlined

@@ -125,9 +125,7 @@ const WidgetChart = () => {
           </Grid>
         </Grid>
         <MainCard content={false} sx={{ mt: 1.5 }}>
-          <Box sx={{ pt: 1, pr: 2 }}>
-            <IncomeAreaChart slot={slot} />
-          </Box>
+          <Box sx={{ pt: 1, pr: 2 }}>{/* <IncomeAreaChart slot={slot} /> */}</Box>
         </MainCard>
       </Grid>
       <Grid item xs={12} md={5} lg={4}>

@@ -150,7 +150,7 @@ const MainRoutes = {
             },
             {
               path: 'disputes',
-              element: <Disputes />
+              element: <Transactions isDisputesOnly />
             },
             {
               path: 'payOut',

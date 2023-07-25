@@ -1,3 +1,4 @@
+import { userApi } from './api/user/user.api';
 // third-party
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch as useAppDispatch, useSelector as useAppSelector, TypedUseSelectorHook } from 'react-redux';
@@ -19,8 +20,10 @@ import productReducer from './reducers/product';
 import cartReducer from './reducers/cart';
 import kanban from './reducers/kanban';
 import invoice from './reducers/invoice';
-
 import { dealsApi } from './api/deals/deals.api';
+import { massPayoutsApi } from './api/mass-payouts/mass-payouts.api';
+import { payoutsApi } from './api/payouts/payouts.api';
+import { statsApi } from './api/stats/stats.api';
 
 // ==============================|| REDUX TOOLKIT - MAIN STORE ||============================== //
 const reducers = combineReducers({
@@ -39,7 +42,11 @@ const reducers = combineReducers({
   product: productReducer,
   kanban,
   invoice,
-  [dealsApi.reducerPath]: dealsApi.reducer
+  [dealsApi.reducerPath]: dealsApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
+  [massPayoutsApi.reducerPath]: massPayoutsApi.reducer,
+  [payoutsApi.reducerPath]: payoutsApi.reducer,
+  [statsApi.reducerPath]: statsApi.reducer
 });
 
 const store = configureStore({
@@ -49,7 +56,12 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
-    }).concat(dealsApi.middleware)
+    })
+      .concat(dealsApi.middleware)
+      .concat(userApi.middleware)
+      .concat(massPayoutsApi.middleware)
+      .concat(payoutsApi.middleware)
+      .concat(statsApi.middleware)
 });
 
 export type RootState = ReturnType<typeof reducers>;

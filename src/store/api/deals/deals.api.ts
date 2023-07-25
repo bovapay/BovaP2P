@@ -1,22 +1,21 @@
-import { PER_PAGE } from 'utils/constants/shared';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { DealsStatsRangeType, IConfirmDealResponse, IDealResponse, IDealsResponse, IStatsResponse } from './deals.types';
+import { IDealItem, IDisputeItem } from './deals.types';
 import baseQueryWithToken from '../../base-query';
 import { QueryType } from 'types/shared';
-import { setStartDay } from 'types/helpers/dates';
 
 export const dealsApi = createApi({
   reducerPath: 'dealsApi',
   baseQuery: baseQueryWithToken,
   endpoints: (builder) => ({
     getDeals: builder.query<
-      IDealsResponse,
+      IDealItem[],
       {
         per?: number;
         page?: string | number;
-        state?: string[];
+        state?: QueryType;
+        states?: string[];
         search_id?: string;
-        material_card_number?: QueryType;
+        card_number?: QueryType;
         search?: QueryType;
         sort?: QueryType;
         device_id?: QueryType;
@@ -28,22 +27,26 @@ export const dealsApi = createApi({
         dateFrom?: QueryType;
       }
     >({
-      query: (params) => {
-        let query = `dashboard/v1/orders?&per=${params.per ? params.per : PER_PAGE}`;
-        if (params.page) {
-          query = query + `&page=${params.page}&q[sorts]=${params.sort ? `${params.sort}` : `created_at DESC`}`;
+      query: ({ page, ...params }) => {
+        let query = `p2p_transactions?`;
+
+        if (page) {
+          query = query + `&page=${page}`;
         }
         if (params.search) {
           query = query + '&q[term]=' + params.search;
         }
         if (params.state) {
-          query = query + params.state?.map((i) => '&q[state_in][]=' + i).join('');
+          query = query + '&q[state_cont]=' + (params.state === 'all' ? '' : params.state);
+        }
+        if (params.states) {
+          query = query + params.states?.map((i) => '&q[state_in][]=' + i).join('');
         }
         if (params.search_id) {
           query = query + `&q[id_eq]=${params.search_id}`;
         }
-        if (params.material_card_number) {
-          query = query + `&q[material_card_number_eq]=${params.material_card_number}`;
+        if (params.card_number) {
+          query = query + `&q[number_cont]=${params.card_number}`;
         }
         if (params.device_id) {
           query = query + `&q[device_id_eq]=${params.device_id}`;
@@ -69,66 +72,34 @@ export const dealsApi = createApi({
         return query;
       }
     }),
-    getDeal: builder.query<IDealResponse, { id: string }>({
-      query: (params) => `dashboard/v1/orders/${params.id}`
-    }),
-    getDealsStats: builder.query<
-      IStatsResponse,
-      {
-        with_opened_dispute?: boolean;
-        range?: DealsStatsRangeType;
-        material_id?: string | number;
-        device_id?: string | number;
-        currency_eq?: string;
-      }
-    >({
-      query: (params) => {
-        let query = `dashboard/v1/orders/stats?`;
-        if (params.with_opened_dispute) {
-          query = query + `&q[with_opened_dispute]=${params.with_opened_dispute}`;
-        }
-        if (params.range === 'last_24h') {
-          const today = new Date();
-          today.setDate(today.getDate() - 1);
-          query = query + `&q[created_at_gteq]=${today.toJSON()}`;
-        }
-        if (params.range === 'today') {
-          query = query + `&q[created_at_gteq]=${setStartDay(new Date()).toJSON()}`;
-        }
-        if (params.range === 'week') {
-          const d = new Date();
-          const day = d.getDay(),
-            diff = d.getDate() - day + (day == 0 ? -6 : 1);
-          const weekStart = new Date(d.setDate(diff));
-          query = query + `&q[created_at_gteq]=${setStartDay(weekStart).toJSON()}`;
-        }
-        if (params.range === 'month') {
-          const date = new Date();
-          const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-
-          query = query + `&q[created_at_gteq]=${firstDay.toJSON()}`;
-        }
-        if (params.range === 'year') {
-          const yearStart = new Date(new Date().getFullYear(), 0, 1);
-
-          query = query + `&q[created_at_gteq]=${yearStart.toJSON()}`;
-        }
-        if (params.material_id) {
-          query = query + `&q[material_id_eq]=${params.material_id}`;
-        }
-        if (params.device_id) {
-          query = query + `&q[device_id_eq]=${params.device_id}`;
-        }
-        return query;
+    getDeal: builder.query<IDealItem, { id: string }>({
+      query: (params) => `p2p_transactions/${params.id}`,
+      transformResponse(baseQueryReturnValue: { result_code: string; payload: IDealItem }, meta, arg) {
+        return baseQueryReturnValue.payload;
       }
     }),
-    confirmDeal: builder.mutation<IConfirmDealResponse, { id: string | number }>({
-      query: (params) => ({
-        url: `dashboard/v1/orders/${params.id}/confirm`,
-        method: 'POST'
-      })
+    getDealDisputes: builder.query<IDisputeItem[], { id: string | number }>({
+      query: ({ id }) => `p2p_disputes?q[p2p_tx_uuid_eq]=${id}&page=1`
+    }),
+    createDealDispute: builder.mutation<any, { amount: number | string; id: string | number; files: File[] }>({
+      query: ({ files, id, amount }) => {
+        let formdata = new FormData();
+        const [file1, file2] = files;
+        console.log(file1, file2);
+        formdata.append('transaction_id', id.toString());
+        formdata.append('p2p_dispute[amount]', amount.toString());
+        formdata.append('p2p_dispute[proof_image]', file1);
+        if (file2) {
+          formdata.append('p2p_dispute[proof_image2]', file2);
+        }
+        return {
+          url: `p2p_disputes`,
+          method: 'POST',
+          body: formdata
+        };
+      }
     })
   })
 });
 
-export const { useGetDealsQuery, useLazyGetDealsQuery, useGetDealQuery, useGetDealsStatsQuery, useConfirmDealMutation } = dealsApi;
+export const { useGetDealsQuery, useLazyGetDealsQuery, useGetDealQuery, useGetDealDisputesQuery, useCreateDealDisputeMutation } = dealsApi;

@@ -3,90 +3,67 @@ import { useNavigate, useParams } from 'react-router';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Grid, IconButton, Chip, FormControl, Button, Stack, Typography, Link } from '@mui/material';
+import {
+  Box,
+  Grid,
+  IconButton,
+  Chip,
+  FormControl,
+  Button,
+  Stack,
+  Typography,
+  Link,
+  TableContainer,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableBody,
+  Table
+} from '@mui/material';
 
 // project import
 import Loader from 'components/Loader';
 import MainCard from 'components/MainCard';
 
-import { dispatch, useSelector } from 'store';
-import { getInvoiceSingleList } from 'store/reducers/invoice';
-
 // assets
 import { ShareAltOutlined } from '@ant-design/icons';
-import { currencySign } from 'utils/transformCurrencyValue';
+import { transformCurrencyValue } from 'utils/transformCurrencyValue';
+import { useGetDealDisputesQuery, useGetDealQuery } from 'store/api/deals/deals.api';
+import { parseDate } from 'utils/parseDate';
 import CreateDispute from 'pages/create-dispute/create-dispute';
+import TransactionStatusSwitcher from 'components/switchers/TransactionStatusSwitcher';
+import CardNumberFormat from 'components/shared/CardNumberFormat';
+import DisputesStatusSwitcher from 'components/switchers/DisputesStatusSwitcher';
 
 // ==============================|| INVOICE - Transaction ||============================== //
 
 const Transaction = () => {
   const theme = useTheme();
   const { id } = useParams();
-  const navigate = useNavigate();
 
-  const { country, list } = useSelector((state) => state.invoice);
-  const [loading, setLoading] = useState<boolean>(true);
+  const { data, isLoading } = useGetDealQuery({ id: id as string }, { skip: !id });
+  const { data: disputesData, isLoading: isDisputesLoading } = useGetDealDisputesQuery({ id: id as string }, { skip: !id });
   const [isCreateDisputeVisible, setIsCreateDisputeVisible] = useState(false);
 
-  useEffect(() => {
-    dispatch(getInvoiceSingleList(Number(id))).then(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  const today = new Date(`${list?.date}`).toLocaleDateString('en-GB', {
-    month: 'numeric',
-    day: 'numeric',
-    year: 'numeric'
-  });
-
-  const due_dates = new Date(`${list?.due_date}`).toLocaleDateString('en-GB', {
-    month: 'numeric',
-    day: 'numeric',
-    year: 'numeric'
-  });
-
-  const subtotal = list?.invoice_detail?.reduce((prev: any, curr: any) => {
-    if (curr.name.trim().length > 0) return prev + Number(curr.price * Math.floor(curr.qty));
-    else return prev;
-  }, 0);
-
-  const taxRate = (Number(list?.tax) * subtotal) / 100;
-  const discountRate = (Number(list?.discount) * subtotal) / 100;
-  const total = subtotal - discountRate + taxRate;
   const componentRef: React.Ref<HTMLDivElement> = useRef(null);
 
-  if (loading) return <Loader />;
+  if (isLoading || isDisputesLoading) return <Loader />;
 
   return (
     <>
-      <CreateDispute isOpen={isCreateDisputeVisible} handleClose={() => setIsCreateDisputeVisible(false)} />
+      <CreateDispute isOpen={isCreateDisputeVisible} handleClose={() => setIsCreateDisputeVisible(false)} id={id as string} />
       <MainCard content={false}>
         <Stack spacing={2.5}>
           <Box sx={{ p: 2.5, pb: 0 }}>
             <MainCard content={false} sx={{ p: 1.25, bgcolor: 'primary.lighter', borderColor: theme.palette.primary[100] }}>
               <Stack direction="row" justifyContent="space-between" alignItems={'center'} spacing={1}>
                 <Typography fontSize={20} color={theme.palette.primary.main} fontWeight={600}>
-                  {currencySign.RUB} 500
+                  {transformCurrencyValue(data?.amount ? +data?.amount : 0, { currency: data?.currency as 'rub' })}
                 </Typography>
-                {/* <IconButton onClick={() => navigation(`/apps/invoice/edit/${id}`)}>
-                <EditOutlined style={{ color: theme.palette.grey[900] }} />
-              </IconButton> */}
-                {/* <PDFDownloadLink document={<ExportPDFView list={list} />} fileName={`${list?.invoice_id}-${list?.customer_name}.pdf`}>
-                <IconButton>
-                  <DownloadOutlined style={{ color: theme.palette.grey[900] }} />
-                </IconButton>
-              </PDFDownloadLink> */}
-                {/* <ReactToPrint
-                trigger={() => (
-                  <IconButton>
-                    <PrinterFilled style={{ color: theme.palette.grey[900] }} />
-                  </IconButton>
-                )}
-                content={() => componentRef.current}
-              /> */}
-                <IconButton>
-                  <ShareAltOutlined style={{ color: theme.palette.grey[900] }} />
-                </IconButton>
+
+                {/* <IconButton>
+                   <ShareAltOutlined style={{ color: theme.palette.grey[900] }} />
+                </IconButton> */}
               </Stack>
             </MainCard>
           </Box>
@@ -96,21 +73,20 @@ const Transaction = () => {
                 <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between">
                   <Box>
                     <Stack direction="row" spacing={2} mb={0.5}>
-                      {/* <LogoSection /> */}
-                      <Chip label="Зачислена" variant="light" color="success" size="small" />
+                      <TransactionStatusSwitcher status={data?.state || ''} />
                     </Stack>
-                    <Typography color="secondary">{list?.invoice_id}</Typography>
+                    <Typography color="secondary">{data?.id}</Typography>
                   </Box>
                   <Box>
                     <Stack direction="row" spacing={1} justifyContent="flex-end">
                       <Typography variant="subtitle1">Дата создания</Typography>
-                      <Typography color="secondary">{today}</Typography>
+                      <Typography color="secondary">{data?.created_at && parseDate(data?.created_at)}</Typography>
                     </Stack>
                     <Stack direction="row" spacing={1} justifyContent="flex-end">
                       <Typography sx={{ overflow: 'hidden' }} variant="subtitle1">
                         Дата обновления
                       </Typography>
-                      <Typography color="secondary">{due_dates}</Typography>
+                      <Typography color="secondary">{data?.updated_at && parseDate(data?.updated_at)}</Typography>
                     </Stack>
                   </Box>
                 </Stack>
@@ -123,18 +99,11 @@ const Transaction = () => {
                       <Typography variant="h5">Информация о транзакции:</Typography>
                       <FormControl sx={{ width: '100%' }}>
                         <Typography sx={{ lineHeight: 1.8 }} color="secondary">
-                          Сумма в USDT: {currencySign.USDT} 12
+                          Платёжное решение: P2P/{data?.currency.toUpperCase()}
                         </Typography>
                         <Typography sx={{ lineHeight: 1.8 }} color="secondary">
-                          Курс USDT/RUB: 88.82
+                          Валюта: {data?.currency?.toUpperCase()}
                         </Typography>
-                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
-                          Платёжное решение: P2P/RUB
-                        </Typography>
-                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
-                          Валюта: RUB
-                        </Typography>
-                        <Link sx={{ lineHeight: 1.8, fontWeight: 500 }}>Ссылка на платёж</Link>
                       </FormControl>
                     </Stack>
                   </MainCard>
@@ -144,36 +113,75 @@ const Transaction = () => {
                     <Stack spacing={1}>
                       <Typography variant="h5">Получатель:</Typography>
                       <FormControl sx={{ width: '100%' }}>
-                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
-                          Sberbank
+                        <Typography sx={{ lineHeight: 1.8, textTransform: 'capitalize' }} color="secondary">
+                          {data?.resipient_card.bank_name}
                         </Typography>
                         <Typography sx={{ lineHeight: 1.8 }} color="secondary">
-                          4276 43** **** 2416
+                          <CardNumberFormat value={data?.resipient_card.number} />
                         </Typography>
-                        <Typography sx={{ lineHeight: 1.8 }} color="secondary">
-                          Иван Иванович И
-                        </Typography>
+                        {data?.customer_name && (
+                          <Typography sx={{ lineHeight: 1.8 }} color="secondary">
+                            {data?.customer_name}
+                          </Typography>
+                        )}
                       </FormControl>
                     </Stack>
                   </MainCard>
                 </Grid>
               </Grid>
 
-              <Grid item xs={12} sm={6} md={8}></Grid>
               <Grid item xs={12}>
-                <Stack direction="row" spacing={1}>
-                  <Typography color="secondary">Нет информации о спорах</Typography>
-                </Stack>
+                {disputesData?.length === 0 && (
+                  <Stack direction="row" spacing={1}>
+                    <Typography color="secondary">Нет информации о спорах</Typography>
+                  </Stack>
+                )}
               </Grid>
+              {disputesData && disputesData?.length > 0 && (
+                <Grid item xs={12}>
+                  <Typography variant="h5" mb={2}>
+                    История споров:
+                  </Typography>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Сумма</TableCell>
+                        <TableCell>Чек</TableCell>
+                        <TableCell>Статус</TableCell>
+                        <TableCell>Обновлён</TableCell>
+                        <TableCell>Создан</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {disputesData.map((row, index) => (
+                        <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                          <TableCell>{transformCurrencyValue(row.amount, { currency: data?.currency as 'rub' })}</TableCell>
+                          <TableCell>
+                            <Link href={row.proof_image} target="_blank">
+                              {row.proof_image.slice(0, 30)}
+                              {row.proof_image.length > 31 && '...'}
+                            </Link>
+                          </TableCell>
+                          <TableCell>
+                            <DisputesStatusSwitcher repeated={row.repeated} status={row.state} />
+                          </TableCell>
+                          <TableCell>{parseDate(row.updated_at)}</TableCell>
+                          <TableCell>{parseDate(row.created_at)}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </Grid>
+              )}
             </Grid>
           </Box>
-          <Stack direction="row" spacing={2} sx={{ p: 2.5, a: { textDecoration: 'none', color: 'inherit' } }}>
-            {/* <PDFDownloadLink document={<ExportPDFView list={list} />} fileName={`${list?.invoice_id}-${list?.customer_name}.pdf`}> */}
-            <Button variant="contained" color="primary" onClick={() => setIsCreateDisputeVisible(true)}>
-              Оспорить транзакцию
-            </Button>
-            {/* </PDFDownloadLink> */}
-          </Stack>
+          {(data?.state === 'failed' || data?.state === 'closed_failed') && (
+            <Stack direction="row" spacing={2} sx={{ p: 2.5, a: { textDecoration: 'none', color: 'inherit' } }}>
+              <Button variant="contained" color="primary" onClick={() => setIsCreateDisputeVisible(true)}>
+                Оспорить транзакцию
+              </Button>
+            </Stack>
+          )}
         </Stack>
       </MainCard>
     </>

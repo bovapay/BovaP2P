@@ -1,258 +1,131 @@
-import { FC, Fragment, useCallback, useMemo, useState } from 'react';
-
-// material-ui
-import { Box, Chip, LinearProgress, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
-
-// third-party
-import { useTable, useFilters, useGlobalFilter, Column, HeaderGroup, Cell, Row, useExpanded } from 'react-table';
+import { useEffect, useState } from 'react';
 
 // project import
+import { useSearchParams } from 'react-router-dom';
+import { useLazyGetDealsQuery } from 'store/api/deals/deals.api';
+import { IDealItem } from 'store/api/deals/deals.types';
+import { Stack, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { useInView } from 'react-intersection-observer';
+import { PER_PAGE } from 'utils/constants/shared';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import { EmptyTable } from 'components/third-party/ReactTable';
-
-import makeData from 'data/react-table';
-import { GlobalFilter, DefaultColumnFilter, SelectColumnFilter, NumberRangeColumnFilter, renderFilterTypes } from 'utils/react-table';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { transformCurrencyValue } from 'utils/transformCurrencyValue';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import ruLocale from 'date-fns/locale/ru';
-import { DownOutlined, RightOutlined } from '@ant-design/icons';
-import MassPayoutDetail from './details';
-
-// ==============================|| REACT TABLE ||============================== //
-
-function ReactTable({
-  columns,
-  data,
-  update,
-  renderRowSubComponent
-}: {
-  columns: Column[];
-  data: [];
-  update: () => void;
-  renderRowSubComponent: FC<any>;
-}) {
-  const filterTypes = useMemo(() => renderFilterTypes, []);
-  const defaultColumn = useMemo(() => ({ Filter: DefaultColumnFilter }), []);
-  const initialState = useMemo(() => ({ filters: [{ id: 'status', value: '' }] }), []);
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    state,
-    preGlobalFilteredRows,
-    setGlobalFilter,
-    visibleColumns
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-      initialState,
-      filterTypes
-    },
-    useGlobalFilter,
-    useFilters,
-    useExpanded
-  );
-
-  const sortingRow = rows;
-  return (
-    <>
-      <Stack direction="row" spacing={2} justifyContent="space-between" sx={{ padding: 2 }}>
-        <GlobalFilter
-          preGlobalFilteredRows={preGlobalFilteredRows}
-          globalFilter={state.globalFilter}
-          placeholder="Поиск по транзакциям"
-          setGlobalFilter={setGlobalFilter}
-        />
-        <Stack spacing={1} direction={'row'}>
-          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ruLocale}>
-            <DatePicker
-              label="От"
-              localeText={{
-                fieldYearPlaceholder: () => 'ГГ',
-                fieldMonthPlaceholder: () => 'ММ',
-                fieldDayPlaceholder: () => 'ДД'
-              }}
-            />
-            <DatePicker
-              label="До"
-              localeText={{
-                fieldYearPlaceholder: () => 'ГГ',
-                fieldMonthPlaceholder: () => 'ММ',
-                fieldDayPlaceholder: () => 'ДД'
-              }}
-            />
-          </LocalizationProvider>
-        </Stack>
-      </Stack>
-      <ScrollX
-        sx={{
-          height: 540,
-          '& .infinite-scroll-component': {
-            overflow: 'visible !important'
-          }
-        }}
-        id="scrollableDiv"
-      >
-        <InfiniteScroll
-          dataLength={rows.length}
-          next={update}
-          hasMore={true}
-          loader={
-            <Box sx={{ width: '70%', py: 1, px: 1, mx: 'auto' }}>
-              <LinearProgress />
-            </Box>
-          }
-          scrollThreshold={0.5}
-          scrollableTarget="scrollableDiv"
-          style={{ width: 'visible' }}
-        >
-          <Table {...getTableProps()}>
-            <TableHead sx={{ borderTopWidth: 2 }}>
-              {headerGroups.map((headerGroup) => (
-                <TableRow {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column: HeaderGroup) => (
-                    <TableCell {...column.getHeaderProps([{ className: column.className }])}>{column.render('Header')}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableHead>
-            <TableBody {...getTableBodyProps()}>
-              {headerGroups.map((group: HeaderGroup<{}>) => (
-                <TableRow {...group.getHeaderGroupProps()}>
-                  {group.headers.map((column: HeaderGroup) => (
-                    <TableCell {...column.getHeaderProps([{ className: column.className }])}>
-                      {column.canFilter ? column.render('Filter') : null}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-              {sortingRow.length > 0 ? (
-                sortingRow.map((row, i) => {
-                  prepareRow(row);
-
-                  const rowProps = row.getRowProps();
-                  return (
-                    <Fragment key={i}>
-                      <TableRow sx={{ textDecoration: 'none' }} {...row.getRowProps()}>
-                        {row.cells.map((cell: Cell) => (
-                          <TableCell {...cell.getCellProps([{ className: cell.column.className }])}>{cell.render('Cell')}</TableCell>
-                        ))}
-                      </TableRow>
-                      {row.isExpanded && renderRowSubComponent({ row, rowProps, visibleColumns })}
-                    </Fragment>
-                  );
-                })
-              ) : (
-                <EmptyTable msg="No Data" colSpan={7} />
-              )}
-            </TableBody>
-          </Table>
-        </InfiniteScroll>
-      </ScrollX>
-    </>
-  );
-}
+import TableLoader from 'components/shared/TableLoader';
+import DateRangeQueryPicker from 'components/filters/DateRangeQueryPicker';
+import ReceiverQueryFilter from 'components/filters/ReceiverQueryFilter';
+import SearchQueryFilter from 'components/filters/SearchQueryFilter';
+import AmountRangeQueryPicker from 'components/filters/AmoutRangeQueryFilter';
+import StateQueryFilter from 'components/filters/StateQueryFilter';
+import List from './list';
+import { useLazyGetMassPayoutsQuery } from 'store/api/mass-payouts/mass-payouts.api';
+import { IMassPayoutsItem } from 'store/api/mass-payouts/mass-payouts.types';
+import { useLazyGetPayoutsQuery } from 'store/api/payouts/payouts.api';
+import { IPayoutsItem } from 'store/api/payouts/payouts.types';
 
 // ==============================|| REACT TABLE - FILTERING ||============================== //
 
 const Payouts = () => {
-  const data = useMemo(() => makeData(50), []);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [list, setList] = useState<IPayoutsItem[]>([]);
+  const [isRefetching, setIsRefetching] = useState<boolean>(false);
+  const [page, setPage] = useState(1);
 
-  const [scrollData, setScrollData] = useState(data);
+  const [getList, { data, isLoading, isError }] = useLazyGetPayoutsQuery();
 
-  const fetchMoreData = () => {
-    setTimeout(() => {
-      setScrollData(scrollData.concat(makeData(10)) as []);
-    }, 1500);
-  };
+  //add page
+  const dateFrom = searchParams.get('dateFrom');
+  const dateTo = searchParams.get('dateTo');
+  const state = searchParams.get('state');
+  const amountFrom = searchParams.get('amountFrom');
+  const amountTo = searchParams.get('amountTo');
 
-  const columns = useMemo(
-    () =>
-      [
-        {
-          Header: () => null,
-          id: 'expander',
-          className: 'cell-center',
-          Cell: ({ row }: { row: Row }) => {
-            const collapseIcon = row.isExpanded ? <DownOutlined /> : <RightOutlined />;
-            return (
-              <Box sx={{ fontSize: '0.75rem', color: 'text.secondary', textAlign: 'center' }} {...row.getToggleRowExpandedProps()}>
-                {collapseIcon}
-              </Box>
-            );
-          },
-          SubCell: () => null
-        },
-        {
-          Header: 'ID',
-          accessor: 'id',
-          filter: 'fuzzyText',
-          disableFilters: true
-        },
-        {
-          Header: 'СУММА (USDT)',
-          accessor: 'lastName',
-          disableFilters: true,
-          Cell: ({ value }: { value: string }) => {
-            return transformCurrencyValue(Math.random() * 10, { currency: 'USDT' });
-          }
-        },
-        {
-          Header: 'СУММА (Фиат)',
-          accessor: 'age',
-          Filter: NumberRangeColumnFilter,
-          filter: 'between',
-          Cell: ({ value }: { value: string }) => {
-            return transformCurrencyValue(Math.random() * 900, { currency: 'RUB' });
-          }
-        },
-        {
-          Header: 'ПОЛУЧАТЕЛЬ',
-          accessor: 'firstName',
-          filter: 'fuzzyText'
-        },
-        {
-          Header: 'СТАТУСЫ',
-          accessor: 'status',
-          Filter: SelectColumnFilter,
-          filter: 'includes',
-          Cell: ({ value }: { value: string }) => {
-            switch (value) {
-              case 'Complicated':
-                return <Chip color="error" label="Не зачислена" size="small" variant="light" />;
-              case 'Relationship':
-                return <Chip color="success" label="Зачислена" size="small" variant="light" />;
-              case 'Single':
-              default:
-                return <Chip color="info" label="В процессе" size="small" variant="light" />;
-            }
-          }
-        },
-        {
-          Header: 'ДАТА И ВРЕМЯ',
-          accessor: 'time',
-          disableFilters: true,
-          Cell: ({ value }: { value: string }) => {
-            return <Typography color="secondary">{value}</Typography>;
-          }
-        }
-      ] as Column[],
-    []
-  );
+  async function getListData(page: number) {
+    page === 1 && setIsRefetching(true);
+    const resp = await getList({
+      page: page,
+      dateFrom: dateFrom,
+      dateTo: dateTo,
+      state: state,
+      amountFrom: amountFrom,
+      amountTo: amountTo
+    });
+    let curData = resp.data;
+    if (page === 1) {
+      curData && setList(curData);
+    } else {
+      let curData = resp?.data as IPayoutsItem[];
+      curData && setList((current) => current.concat(curData));
+    }
+    setIsRefetching(false);
+  }
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setPage(1);
+      getListData(1);
+    }, 500);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [dateFrom, dateTo, state, amountFrom, amountTo]);
 
-  const renderRowSubComponent = useCallback(({ row: { id } }: { row: Row<{}> }) => <MassPayoutDetail data={data[Number(id)]} />, [data]);
+  useEffect(() => {
+    setIsRefetching(true);
+  }, []);
 
+  const { ref, inView } = useInView({ threshold: 0 });
+  useEffect(() => {
+    if (inView) {
+      getListData(page + 1);
+      setPage((page) => page + 1);
+    }
+  }, [inView]);
+
+  let filters = [
+    { label: 'Все статусы', value: 'all' },
+    { label: 'Оплачен', value: 'payed' },
+    { label: 'В процессе', value: 'pending' },
+    { label: 'Подтверждён', value: 'confirmed' },
+    { label: 'Не зачислен', value: 'failed' }
+  ];
   return (
     <MainCard content={false} border={false}>
-      <ReactTable columns={columns} data={scrollData} update={fetchMoreData} renderRowSubComponent={renderRowSubComponent} />
+      <ScrollX>
+        <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ padding: 2 }}>
+          {/* <SearchQueryFilter /> */}
+          <DateRangeQueryPicker />
+        </Stack>
+
+        <Table>
+          <TableHead sx={{ borderTopWidth: 2 }}>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>СУММА (Фиат)</TableCell>
+              <TableCell>ТИП ОПЕРАЦИИ</TableCell>
+              <TableCell>СТАТУСЫ</TableCell>
+              <TableCell>ДАТА И ВРЕМЯ</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <TableRow>
+              <TableCell></TableCell>
+              <TableCell>
+                <AmountRangeQueryPicker />
+              </TableCell>
+              <TableCell></TableCell>
+              <TableCell>
+                <StateQueryFilter variants={filters} />
+              </TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+            {/* TABLE LIST  */}
+            <List isError={isError} isLoading={isLoading} isRefetching={isRefetching} list={list} />
+          </TableBody>
+        </Table>
+        {data && data?.length >= PER_PAGE && !isLoading && !isRefetching && !isError && (
+          <div ref={ref}>
+            <TableLoader />
+          </div>
+        )}
+      </ScrollX>
     </MainCard>
   );
 };

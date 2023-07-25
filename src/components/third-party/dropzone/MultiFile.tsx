@@ -33,6 +33,7 @@ const MultiFileUpload = ({
   sx,
   onUpload,
   isUploadVisible = true,
+  maxFiles,
   ...other
 }: UploadMultiFileProps) => {
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({

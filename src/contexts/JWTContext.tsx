@@ -31,7 +31,7 @@ const verifyToken: (st: string) => boolean = (serviceToken) => {
   /**
    * Property 'exp' does not exist on type '<T = unknown>(token: string, options?: JwtDecodeOptions | undefined) => T'.
    */
-  return decoded.exp > Date.now() / 1000;
+  return decoded.exp < Date.now();
 };
 
 const setSession = (serviceToken?: string | null) => {
@@ -87,7 +87,6 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
     const { access_token } = response.data;
     setSession(access_token);
     const userResponse: any = await axios.get('user');
-    console.log(userResponse.data);
 
     dispatch({
       type: LOGIN,

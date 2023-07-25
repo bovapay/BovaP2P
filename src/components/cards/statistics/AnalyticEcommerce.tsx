@@ -15,7 +15,7 @@ interface Props {
   percentage?: number;
   isLoss?: boolean;
   color?: ChipProps['color'];
-  extra: React.ReactNode;
+  extra?: React.ReactNode;
 }
 
 const AnalyticEcommerce = ({ color = 'primary', title, count, percentage, isLoss, extra }: Props) => (
@@ -25,7 +25,7 @@ const AnalyticEcommerce = ({ color = 'primary', title, count, percentage, isLoss
         {title}
       </Typography>
       <Grid container alignItems="center">
-        <Grid item>
+        <Grid item sx={{ pt: extra ? 0 : 2.25 }}>
           <Typography variant="h4" color="inherit">
             {count}
           </Typography>
@@ -49,13 +49,15 @@ const AnalyticEcommerce = ({ color = 'primary', title, count, percentage, isLoss
         )}
       </Grid>
     </Stack>
-    <Box sx={{ pt: 2.25 }}>
-      <Typography variant="caption" color="textSecondary">
-        {/* <Typography component="span" variant="caption" sx={{ color: `${color || 'primary'}.main` }}> */}
-        {extra}
-        {/* </Typography> */}
-      </Typography>
-    </Box>
+    {extra && (
+      <Box sx={{ pt: 2.25 }}>
+        <Typography variant="caption" color="textSecondary">
+          {/* <Typography component="span" variant="caption" sx={{ color: `${color || 'primary'}.main` }}> */}
+          {extra}
+          {/* </Typography> */}
+        </Typography>
+      </Box>
+    )}
   </MainCard>
 );
 

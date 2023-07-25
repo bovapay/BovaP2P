@@ -1,9 +1,25 @@
+//TODO: rewrite on switch
 export const currencySign = {
   USDT: '₸',
   RUB: '₽'
 };
 
-export function transformCurrencyValue(number: number, settings?: { currency: 'USDT' | 'RUB' }) {
+function currencySignSwitcher(currency: string) {
+  switch (currency) {
+    case 'rub':
+      return '₽';
+    case 'gel':
+      return '₾';
+    case 'idr':
+      return 'Rp';
+    case 'usdt':
+      return '₸';
+    default:
+      return '';
+  }
+}
+
+export function transformCurrencyValue(number: number, settings?: { currency: 'USDT' | 'RUB' | 'usdt' | 'rub' }) {
   const shortNumber = number.toFixed(2);
   const [leftVal, rightVal] = shortNumber.split('.');
   const reversedValArray = leftVal.split('').reverse();
@@ -20,7 +36,7 @@ export function transformCurrencyValue(number: number, settings?: { currency: 'U
   }
   let value = `${validLeftVal}${+rightVal > 0 ? `,${+rightVal}` : ''}`;
   if (settings?.currency) {
-    value = `${currencySign[settings.currency]} ${value}`;
+    value = `${currencySignSwitcher(settings?.currency?.toLocaleLowerCase())} ${value}`;
   }
   return value;
 }

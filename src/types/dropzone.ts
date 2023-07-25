@@ -31,6 +31,7 @@ export interface UploadMultiFileProps extends DropzoneOptions {
   showList?: boolean;
   type?: DropzopType;
   sx?: SxProps<Theme>;
+  maxFiles?: number;
   onUpload?: VoidFunction;
   onRemove?: (file: File | string) => void;
   onRemoveAll?: VoidFunction;

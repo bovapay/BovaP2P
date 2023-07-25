@@ -3,7 +3,7 @@
   "main": "Главная",
   "transactions": "Транзакции",
   "disputes": "Спорные транзакции",
-  "payouts": "Вывод средств",
+  "payouts": "Финансовые операции",
   "massPayouts": "Массовые выплаты",
   "transaction": "Информация о транзакции",
   "accordion": "Accordion",

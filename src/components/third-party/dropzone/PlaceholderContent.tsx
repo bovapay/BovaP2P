@@ -24,9 +24,9 @@ export default function PlaceholderContent({ type }: { type?: string }) {
             <Typography variant="h5">Перетащите или выберите файл</Typography>
 
             <Typography color="secondary">
-              Перетащите сюда или кликните для&nbsp;
-              <Typography component="span" color="primary" sx={{ textDecoration: 'underline' }}>
-                загрузки
+              Загрузите до&nbsp;
+              <Typography component="span" color="primary" sx={{ fontWeight: 500 }}>
+                двух файлов
               </Typography>
             </Typography>
           </Stack>

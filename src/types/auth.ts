@@ -42,13 +42,13 @@ export type UserProfile = {
     updated_at: string;
     deleted_at: null;
   };
-  p2p_balance: {
+  p2p_balances: {
     amount: string;
     usdt_amount: string;
     currency: string;
     created_at: string;
     updated_at: string;
-  };
+  }[];
   mass_balance: {
     amount: string;
     usdt_amount: string;

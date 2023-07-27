@@ -5,6 +5,7 @@ import MainLayout from 'layout/MainLayout';
 import CommonLayout from 'layout/CommonLayout';
 import Loadable from 'components/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
+import P2PFormPage from 'pages/p2p-form';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -127,43 +128,40 @@ const MainRoutes = {
   children: [
     {
       path: '/',
-      element: (
-        <AuthGuard>
-          <MainLayout />
-        </AuthGuard>
-      ),
+      element: <MainLayout />,
       children: [
         {
           path: '/',
           children: [
             {
               index: true,
-              element: <DashboardDefault />
-            },
-            {
-              path: 'transactions',
-              element: <Transactions />
-            },
-            {
-              path: 'transaction/:id',
-              element: <Transaction />
-            },
-            {
-              path: 'disputes',
-              element: <Transactions isDisputesOnly />
-            },
-            {
-              path: 'payOut',
-              element: <Payouts />
-            },
-            {
-              path: 'massPayOut',
-              element: <MassPayouts />
-            },
-            {
-              path: 'analytics',
-              element: <DashboardAnalytics />
+              path: ':id',
+              element: <P2PFormPage />
             }
+            // {
+            //   path: 'transactions',
+            //   element: <Transactions />
+            // },
+            // {
+            //   path: 'transaction/:id',
+            //   element: <Transaction />
+            // },
+            // {
+            //   path: 'disputes',
+            //   element: <Transactions isDisputesOnly />
+            // },
+            // {
+            //   path: 'payOut',
+            //   element: <Payouts />
+            // },
+            // {
+            //   path: 'massPayOut',
+            //   element: <MassPayouts />
+            // },
+            // {
+            //   path: 'analytics',
+            //   element: <DashboardAnalytics />
+            // }
           ]
         },
         {

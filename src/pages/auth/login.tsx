@@ -11,7 +11,7 @@ import AuthLogin from 'sections/auth/auth-forms/AuthLogin';
 // ================================|| LOGIN ||================================ //
 
 const Login = () => {
-  const { isLoggedIn } = useAuth();
+  // const { isLoggedIn } = useAuth();
 
   return (
     <AuthWrapper>
@@ -31,7 +31,7 @@ const Login = () => {
           </Stack>
         </Grid>
         <Grid item xs={12}>
-          <AuthLogin isDemo={isLoggedIn} />
+          {/* <AuthLogin isDemo={isLoggedIn} /> */}
         </Grid>
       </Grid>
     </AuthWrapper>

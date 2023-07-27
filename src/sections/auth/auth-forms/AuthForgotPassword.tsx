@@ -21,7 +21,7 @@ const AuthForgotPassword = () => {
   const scriptedRef = useScriptRef();
   const navigate = useNavigate();
 
-  const { isLoggedIn, resetPassword } = useAuth();
+  // const { isLoggedIn, resetPassword } = useAuth();
 
   return (
     <>
@@ -33,47 +33,48 @@ const AuthForgotPassword = () => {
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required')
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
-            await resetPassword(values.email).then(
-              () => {
-                setStatus({ success: true });
-                setSubmitting(false);
-                dispatch(
-                  openSnackbar({
-                    open: true,
-                    message: 'Check mail for reset password link',
-                    variant: 'alert',
-                    alert: {
-                      color: 'success'
-                    },
-                    close: false
-                  })
-                );
-                setTimeout(() => {
-                  navigate(isLoggedIn ? '/auth/check-mail' : '/check-mail', { replace: true });
-                }, 1500);
+        onSubmit={() => {}}
+        // onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+        //   try {
+        //     await resetPassword(values.email).then(
+        //       () => {
+        //         setStatus({ success: true });
+        //         setSubmitting(false);
+        //         dispatch(
+        //           openSnackbar({
+        //             open: true,
+        //             message: 'Check mail for reset password link',
+        //             variant: 'alert',
+        //             alert: {
+        //               color: 'success'
+        //             },
+        //             close: false
+        //           })
+        //         );
+        //         setTimeout(() => {
+        //           navigate(isLoggedIn ? '/auth/check-mail' : '/check-mail', { replace: true });
+        //         }, 1500);
 
-                // WARNING: do not set any formik state here as formik might be already destroyed here. You may get following error by doing so.
-                // Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application.
-                // To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
-                // github issue: https://github.com/formium/formik/issues/2430
-              },
-              (err: any) => {
-                setStatus({ success: false });
-                setErrors({ submit: err.message });
-                setSubmitting(false);
-              }
-            );
-          } catch (err: any) {
-            console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
-          }
-        }}
+        //         // WARNING: do not set any formik state here as formik might be already destroyed here. You may get following error by doing so.
+        //         // Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application.
+        //         // To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
+        //         // github issue: https://github.com/formium/formik/issues/2430
+        //       },
+        //       (err: any) => {
+        //         setStatus({ success: false });
+        //         setErrors({ submit: err.message });
+        //         setSubmitting(false);
+        //       }
+        //     );
+        //   } catch (err: any) {
+        //     console.error(err);
+        //     if (scriptedRef.current) {
+        //       setStatus({ success: false });
+        //       setErrors({ submit: err.message });
+        //       setSubmitting(false);
+        //     }
+        //   }
+        // }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>

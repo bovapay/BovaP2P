@@ -10,20 +10,20 @@ import { GuardProps } from 'types/auth';
 // ==============================|| AUTH GUARD ||============================== //
 
 const AuthGuard = ({ children }: GuardProps) => {
-  const { isLoggedIn } = useAuth();
+  // const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate('login', {
-        state: {
-          from: location.pathname
-        },
-        replace: true
-      });
-    }
-  }, [isLoggedIn, navigate, location]);
+  // useEffect(() => {
+  //   if (!isLoggedIn) {
+  //     navigate('login', {
+  //       state: {
+  //         from: location.pathname
+  //       },
+  //       replace: true
+  //     });
+  //   }
+  // }, [isLoggedIn, navigate, location]);
 
   return children;
 };

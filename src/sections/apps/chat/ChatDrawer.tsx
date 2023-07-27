@@ -54,7 +54,7 @@ interface ChatDrawerProps {
 
 function ChatDrawer({ handleDrawerOpen, openChatDrawer, setUser }: ChatDrawerProps) {
   const theme = useTheme();
-  const { user } = useAuth();
+  // const { user } = useAuth();
 
   const matchDownLG = useMediaQuery(theme.breakpoints.down('lg'));
   const drawerBG = theme.palette.mode === ThemeMode.DARK ? 'dark.main' : 'white';
@@ -191,7 +191,7 @@ function ChatDrawer({ handleDrawerOpen, openChatDrawer, setUser }: ChatDrawerPro
                 <Grid item xs zeroMinWidth>
                   <Stack sx={{ cursor: 'pointer', textDecoration: 'none' }} component={Link} to="/apps/profiles/user/personal">
                     <Typography align="left" variant="h5" color="textPrimary">
-                      {user?.name}
+                      {/* {user?.name} */}
                     </Typography>
                     <Typography align="left" variant="caption" color="textSecondary">
                       {/* {user?.role} */}

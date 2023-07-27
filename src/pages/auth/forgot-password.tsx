@@ -11,7 +11,7 @@ import AuthForgotPassword from 'sections/auth/auth-forms/AuthForgotPassword';
 // ================================|| FORGOT PASSWORD ||================================ //
 
 const ForgotPassword = () => {
-  const { isLoggedIn } = useAuth();
+  // const { isLoggedIn } = useAuth();
 
   return (
     <AuthWrapper>
@@ -19,7 +19,7 @@ const ForgotPassword = () => {
         <Grid item xs={12}>
           <Stack direction="row" justifyContent="space-between" alignItems="baseline" sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
             <Typography variant="h3">Forgot Password</Typography>
-            <Typography
+            {/* <Typography
               component={Link}
               to={isLoggedIn ? '/auth/login' : '/login'}
               variant="body1"
@@ -27,7 +27,7 @@ const ForgotPassword = () => {
               color="primary"
             >
               Back to Login
-            </Typography>
+            </Typography> */}
           </Stack>
         </Grid>
         <Grid item xs={12}>

@@ -24,6 +24,7 @@ import { dealsApi } from './api/deals/deals.api';
 import { massPayoutsApi } from './api/mass-payouts/mass-payouts.api';
 import { payoutsApi } from './api/payouts/payouts.api';
 import { statsApi } from './api/stats/stats.api';
+import { p2pApi } from './api/p2p/p2p.api';
 
 // ==============================|| REDUX TOOLKIT - MAIN STORE ||============================== //
 const reducers = combineReducers({
@@ -46,7 +47,8 @@ const reducers = combineReducers({
   [userApi.reducerPath]: userApi.reducer,
   [massPayoutsApi.reducerPath]: massPayoutsApi.reducer,
   [payoutsApi.reducerPath]: payoutsApi.reducer,
-  [statsApi.reducerPath]: statsApi.reducer
+  [statsApi.reducerPath]: statsApi.reducer,
+  [p2pApi.reducerPath]: p2pApi.reducer
 });
 
 const store = configureStore({
@@ -62,6 +64,7 @@ const store = configureStore({
       .concat(massPayoutsApi.middleware)
       .concat(payoutsApi.middleware)
       .concat(statsApi.middleware)
+      .concat(p2pApi.middleware)
 });
 
 export type RootState = ReturnType<typeof reducers>;

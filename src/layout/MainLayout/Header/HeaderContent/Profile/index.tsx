@@ -12,7 +12,7 @@ import Avatar from 'components/@extended/Avatar';
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 import IconButton from 'components/@extended/IconButton';
-import useAuth from 'hooks/useAuth';
+// import useAuth from 'hooks/useAuth';
 
 // assets
 import avatarPlaceholder from 'assets/images/profile/avatar.svg';
@@ -53,10 +53,10 @@ const Profile = () => {
   const theme = useTheme();
   const navigate = useNavigate();
 
-  const { logout, user } = useAuth();
+  // const { logout, user } = useAuth();
   const handleLogout = async () => {
     try {
-      await logout();
+      // await logout();
       navigate(`/login`, {
         state: {
           from: ''
@@ -109,7 +109,7 @@ const Profile = () => {
       >
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 0.5 }}>
           <Avatar alt="profile user" src={avatarPlaceholder} size="xs" />
-          <Typography variant="subtitle1">{user?.name}</Typography>
+          {/* <Typography variant="subtitle1">{user?.name}</Typography> */}
         </Stack>
       </ButtonBase>
       <Popper
@@ -149,12 +149,12 @@ const Profile = () => {
                     <Grid container justifyContent="space-between" alignItems="center">
                       <Grid item>
                         <Stack direction="row" spacing={1.25} alignItems="center">
-                          <Avatar alt="profile user" src={user?.avatar || avatarPlaceholder} sx={{ width: 32, height: 32 }} />
+                          {/* <Avatar alt="profile user" src={user?.avatar || avatarPlaceholder} sx={{ width: 32, height: 32 }} /> */}
                           <Stack>
-                            <Typography variant="h6">{user?.name}</Typography>
+                            {/* <Typography variant="h6">{user?.name}</Typography>
                             <Typography variant="body2" color="textSecondary">
                               {user?.email}
-                            </Typography>
+                            </Typography> */}
                           </Stack>
                         </Stack>
                       </Grid>

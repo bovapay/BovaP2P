@@ -31,12 +31,12 @@ export function parseDate(dateData: string | Date | number, mode: parseMode = 'd
   const month = date.getMonth();
   const day = date.getDate();
 
-  if (mode === 'default' && getDateWithoutHMS(date) == getDateWithoutHMS(now)) {
-    return `Сегодня, ${parseTime(date, withSeconds)}`;
-  }
-  if (mode === 'default' && getDateWithoutHMS(date) == getDateWithoutHMS(yesterday)) {
-    return `Вчера, ${parseTime(date, withSeconds)}`;
-  }
+  // if (mode === 'default' && getDateWithoutHMS(date) == getDateWithoutHMS(now)) {
+  //   return `Сегодня, ${parseTime(date, withSeconds)}`;
+  // }
+  // if (mode === 'default' && getDateWithoutHMS(date) == getDateWithoutHMS(yesterday)) {
+  //   return `Вчера, ${parseTime(date, withSeconds)}`;
+  // }
 
   if (mode === 'noWords') {
     return `${parseTime(date, withSeconds)}`;
@@ -50,5 +50,5 @@ export function parseDate(dateData: string | Date | number, mode: parseMode = 'd
   if (mode === 'year') {
     return `${changeTime(day)}.${changeTime(month + 1)}.${year}`;
   }
-  return `${changeTime(day)}.${changeTime(month + 1)}, ${parseTime(date, withSeconds)}`;
+  return `${changeTime(day)}.${changeTime(month + 1)}.${changeTime(year).slice(-2)}, ${parseTime(date, withSeconds)}`;
 }

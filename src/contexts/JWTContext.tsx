@@ -35,13 +35,13 @@ const verifyToken: (st: string) => boolean = (serviceToken) => {
 };
 
 const setSession = (serviceToken?: string | null) => {
-  if (serviceToken) {
-    localStorage.setItem('serviceToken', serviceToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
-  } else {
-    localStorage.removeItem('serviceToken');
-    delete axios.defaults.headers.common.Authorization;
-  }
+  // if (serviceToken) {
+  //   localStorage.setItem('serviceToken', serviceToken);
+  //   axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
+  // } else {
+  //   localStorage.removeItem('serviceToken');
+  //   delete axios.defaults.headers.common.Authorization;
+  // }
 };
 
 // ==============================|| JWT CONTEXT & PROVIDER ||============================== //
@@ -52,33 +52,32 @@ export const JWTProvider = ({ children }: { children: React.ReactElement }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   useEffect(() => {
-    const init = async () => {
-      try {
-        const serviceToken = window.localStorage.getItem('serviceToken');
-        if (serviceToken && verifyToken(serviceToken)) {
-          setSession(serviceToken);
-          const response = await axios.get('user');
-          dispatch({
-            type: LOGIN,
-            payload: {
-              isLoggedIn: true,
-              user: response.data
-            }
-          });
-        } else {
-          dispatch({
-            type: LOGOUT
-          });
-        }
-      } catch (err) {
-        console.error(err);
-        dispatch({
-          type: LOGOUT
-        });
-      }
-    };
-
-    init();
+    // const init = async () => {
+    //   try {
+    //     const serviceToken = window.localStorage.getItem('serviceToken');
+    //     if (serviceToken && verifyToken(serviceToken)) {
+    //       setSession(serviceToken);
+    //       const response = await axios.get('user');
+    //       dispatch({
+    //         type: LOGIN,
+    //         payload: {
+    //           isLoggedIn: true,
+    //           user: response.data
+    //         }
+    //       });
+    //     } else {
+    //       dispatch({
+    //         type: LOGOUT
+    //       });
+    //     }
+    //   } catch (err) {
+    //     console.error(err);
+    //     dispatch({
+    //       type: LOGOUT
+    //     });
+    //   }
+    // };
+    // init();
   }, []);
 
   const login = async (email: string, password: string) => {

@@ -36,7 +36,7 @@ export function transformCurrencyValue(number: number, settings?: { currency: 'U
   }
   let value = `${validLeftVal}${+rightVal > 0 ? `,${+rightVal}` : ''}`;
   if (settings?.currency) {
-    value = `${currencySignSwitcher(settings?.currency?.toLocaleLowerCase())} ${value}`;
+    value = `${value} ${currencySignSwitcher(settings?.currency?.toLocaleLowerCase())}`;
   }
   return value;
 }

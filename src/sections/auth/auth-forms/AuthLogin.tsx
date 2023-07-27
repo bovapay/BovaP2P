@@ -35,7 +35,7 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
   const [checked, setChecked] = React.useState(false);
 
-  const { login } = useAuth();
+  // const { login } = useAuth();
   const scriptedRef = useScriptRef();
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -61,7 +61,7 @@ const AuthLogin = ({ isDemo = false }: { isDemo?: boolean }) => {
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await login(values.email, values.password);
+            // await login(values.email, values.password);
             if (scriptedRef.current) {
               setStatus({ success: true });
               setSubmitting(false);

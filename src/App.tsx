@@ -23,7 +23,7 @@ import { JWTProvider as AuthProvider } from 'contexts/JWTContext';
 // ==============================|| APP - THEME, ROUTER, LOCAL  ||============================== //
 
 const App = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
 
   // useEffect(() => {
   //   // fetch dashboard menu from API
@@ -32,19 +32,19 @@ const App = () => {
   //   });
   // }, []);
 
-  if (loading) return <Loader />;
+  // if (loading) return <Loader />;
 
   return (
     <ThemeCustomization>
       <RTLLayout>
         <Locales>
           <ScrollTop>
-            <AuthProvider>
-              <Notistack>
-                <Routes />
-                <Snackbar />
-              </Notistack>
-            </AuthProvider>
+            {/* <AuthProvider> */}
+            <Notistack>
+              <Routes />
+              <Snackbar />
+            </Notistack>
+            {/* </AuthProvider> */}
           </ScrollTop>
         </Locales>
       </RTLLayout>

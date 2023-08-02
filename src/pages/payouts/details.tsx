@@ -2,16 +2,13 @@
 import { alpha, useTheme } from '@mui/material/styles';
 import { useMediaQuery, Grid, Divider, List, ListItem, Stack, TableCell, TableRow, Typography } from '@mui/material';
 
-// third-party
-import { PatternFormat } from 'react-number-format';
-
 // project import
 import Avatar from 'components/@extended/Avatar';
 import MainCard from 'components/MainCard';
 
 // assets
 import { CheckOutlined } from '@ant-design/icons';
-import { currencySign, transformCurrencyValue } from 'utils/transformCurrencyValue';
+import { transformCurrencyValue } from 'utils/transformCurrencyValue';
 import { IPayoutsItem } from 'store/api/payouts/payouts.types';
 import { typeTextSwitcher } from './item';
 import { parseDate } from 'utils/parseDate';

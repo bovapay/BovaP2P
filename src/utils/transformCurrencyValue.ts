@@ -14,6 +14,8 @@ function currencySignSwitcher(currency: string) {
       return 'Rp';
     case 'usdt':
       return '₸';
+    case 'byn':
+      return 'Br';
     default:
       return '';
   }
@@ -36,7 +38,7 @@ export function transformCurrencyValue(number: number, settings?: { currency: 'U
   }
   let value = `${validLeftVal}${+rightVal > 0 ? `,${+rightVal}` : ''}`;
   if (settings?.currency) {
-    value = `${value} ${currencySignSwitcher(settings?.currency?.toLocaleLowerCase())}`;
+    value = `${value} ${currencySignSwitcher(settings?.currency?.toLowerCase())}`;
   }
   return value;
 }

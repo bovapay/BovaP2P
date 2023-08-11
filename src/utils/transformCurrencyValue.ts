@@ -1,9 +1,3 @@
-//TODO: rewrite on switch
-export const currencySign = {
-  USDT: '₸',
-  RUB: '₽'
-};
-
 function currencySignSwitcher(currency: string) {
   switch (currency) {
     case 'rub':
@@ -16,6 +10,10 @@ function currencySignSwitcher(currency: string) {
       return '₸';
     case 'byn':
       return 'Br';
+    case 'uzs':
+      return `so'm`;
+    case 'kgs':
+      return 'сом';
     default:
       return '';
   }

@@ -12,6 +12,8 @@ export default function BankSwitcher({ bank }: { bank: string }) {
         return <Sber />;
       case 'raiffeisen':
         return <Raif />;
+      case 'tinkoff':
+        return <Tinkoff />;
       default:
         return false;
     }
@@ -23,6 +25,8 @@ export default function BankSwitcher({ bank }: { bank: string }) {
         return 'Сбербанк';
       case 'raiffeisen':
         return 'Райффайзен Банк';
+      case 'tinkoff':
+        return 'Тинькофф банк';
       default:
         return bank;
     }

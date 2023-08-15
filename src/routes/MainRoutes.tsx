@@ -6,6 +6,7 @@ import CommonLayout from 'layout/CommonLayout';
 import Loadable from 'components/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 import P2PFormPage from 'pages/p2p-form';
+import P2PFormTestPage from 'pages/p2p-form-test';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -137,6 +138,10 @@ const MainRoutes = {
               index: true,
               path: ':id',
               element: <P2PFormPage />
+            },
+            {
+              path: 'test/:id',
+              element: <P2PFormTestPage />
             }
             // {
             //   path: 'transactions',

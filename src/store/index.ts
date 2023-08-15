@@ -12,6 +12,7 @@ import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 // project import
+import p2pTestSlice from './reducers/p2p-test';
 import chat from './reducers/chat';
 import calendar from './reducers/calendar';
 import menu from './reducers/menu';
@@ -43,6 +44,7 @@ const reducers = combineReducers({
   product: productReducer,
   kanban,
   invoice,
+  p2pTestSlice,
   [dealsApi.reducerPath]: dealsApi.reducer,
   [userApi.reducerPath]: userApi.reducer,
   [massPayoutsApi.reducerPath]: massPayoutsApi.reducer,

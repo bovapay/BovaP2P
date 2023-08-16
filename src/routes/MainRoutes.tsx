@@ -7,6 +7,7 @@ import Loadable from 'components/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 import P2PFormPage from 'pages/p2p-form';
 import P2PFormTestPage from 'pages/p2p-form-test';
+import P2PCreateTest from 'pages/p2p-create-test';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
@@ -142,6 +143,10 @@ const MainRoutes = {
             {
               path: 'test/:id',
               element: <P2PFormTestPage />
+            },
+            {
+              path: 'create-test',
+              element: <P2PCreateTest />
             }
             // {
             //   path: 'transactions',

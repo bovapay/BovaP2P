@@ -1,5 +1,6 @@
 // material-ui
-import { Checkbox, FormControlLabel, Grid, InputLabel, Stack, Typography, TextField, LinearProgress, Box } from '@mui/material';
+import { Typography, LinearProgress, Box } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
 
 // ==============================|| BASIC WIZARD - ADDRESS  ||============================== //
 
@@ -15,7 +16,8 @@ export default function AddressForm() {
           }}
           textAlign={'center'}
         >
-          Поиск реквизитов для оплаты...
+          <FormattedMessage id="firstTitle" />
+          ...
         </Typography>
 
         <LinearProgress sx={{ flexGrow: 0, mt: '24px' }} />

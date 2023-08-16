@@ -8,6 +8,7 @@ import CardNumberFormat from 'components/shared/CardNumberFormat';
 import useGetTransactionData from '../useGetTransactionData';
 import { transformCurrencyValue } from 'utils/transformCurrencyValue';
 import { parseDate } from 'utils/parseDate';
+import { FormattedMessage } from 'react-intl';
 
 // ==============================|| BASIC WIZARD - REVIEW  ||============================== //
 
@@ -17,9 +18,9 @@ export default function Review() {
   function getTitle() {
     switch (data?.payload.state) {
       case 'successed':
-        return 'Счет оплачен';
+        return <FormattedMessage id="p2pThirdSucceed" />;
       case 'failed':
-        return 'Счет не оплачен';
+        return <FormattedMessage id="p2pThirdFailed" />;
       default:
         return 'Не опознанный статус';
     }
@@ -95,7 +96,7 @@ export default function Review() {
                 fontWeight: 400
               }}
             >
-              Перевод на карту{' '}
+              <FormattedMessage id="transferToTheCard" />{' '}
               <Typography component={'b'} sx={{ fontWeight: 500 }}>
                 <CardNumberFormat value={data?.payload.resipient_card.number} />
               </Typography>
@@ -104,7 +105,9 @@ export default function Review() {
         </Box>
         <Stack sx={{ borderBottom: '1px solid #F0F0F0', borderTop: '1px solid #F0F0F0', py: '20px', width: '100%', flexDirection: 'row' }}>
           <Stack width={'50%'} gap={'10px'} justifyContent={'center'} alignItems={'center'}>
-            <Typography sx={{ color: 'var(--character-secondary, #8C8C8C)', fontSize: '14px', fontWeight: 400 }}>Сумма</Typography>
+            <Typography sx={{ color: 'var(--character-secondary, #8C8C8C)', fontSize: '14px', fontWeight: 400 }}>
+              <FormattedMessage id="sum" />
+            </Typography>
             <Typography
               sx={{
                 color: 'var(--day-title, #262626)',
@@ -116,7 +119,9 @@ export default function Review() {
             </Typography>
           </Stack>
           <Stack width={'50%'} gap={'10px'} justifyContent={'center'} alignItems={'center'}>
-            <Typography sx={{ color: 'var(--character-secondary, #8C8C8C)', fontSize: '14px', fontWeight: 400 }}>Дата платежа</Typography>
+            <Typography sx={{ color: 'var(--character-secondary, #8C8C8C)', fontSize: '14px', fontWeight: 400 }}>
+              <FormattedMessage id="paymentDate" />
+            </Typography>
             <Typography
               sx={{
                 color: 'var(--day-title, #262626)',
@@ -131,7 +136,7 @@ export default function Review() {
       </Stack>
       <Link href={data?.payload.callback_url || ''}>
         <Button size="large" variant="contained" sx={{ textTransform: 'initial' }}>
-          Вернуться в магазин
+          <FormattedMessage id="backToShop" />
         </Button>
       </Link>
     </>

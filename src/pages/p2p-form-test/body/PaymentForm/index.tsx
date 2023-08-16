@@ -1,21 +1,20 @@
 // material-ui
-import { Box, Button, CircularProgress, LinearProgress, Stack, Typography } from '@mui/material';
+import { Box, Button, LinearProgress, Stack, Typography } from '@mui/material';
 
 import Bg from 'assets/images/p2p-card-bg.png';
 import { paymentColorFullIcons } from 'utils/helpers/paymentColorFulIcons';
 import CardNumberFormat from 'components/shared/CardNumberFormat';
-import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
+import { CheckOutlined } from '@ant-design/icons';
 import { transformCurrencyValue } from 'utils/transformCurrencyValue';
-import BankSwitcher from './BankSwitcher';
-import TimerContent from '../TimerContent/TimerContent';
+import TimerContent from '../../../p2p-form/body/TimerContent/TimerContent';
 import Copy from 'components/shared/Copy/Copy';
-import { useAcceptP2PMutation, useCancelP2PMutation } from 'store/api/p2p/p2p.api';
 import ConfirmModal from 'components/shared/ConfirmModal';
 import useGetTransactionData from 'pages/p2p-form-test/useGetTransactionData';
 import { useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'store';
 import { setP2PState } from 'store/reducers/p2p-test';
 import { FormattedMessage } from 'react-intl';
+import BankSwitcher from 'pages/p2p-form/body/PaymentForm/BankSwitcher';
 
 // ==============================|| BASIC WIZARD - PAYMENT  ||============================== //
 

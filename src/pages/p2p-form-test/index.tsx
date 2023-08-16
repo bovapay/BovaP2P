@@ -1,7 +1,7 @@
 import React from 'react';
-import P2PLogo from './logo';
 import { Box } from '@mui/material';
 import P2pFormBody from './body';
+import P2PLogo from 'components/shared/P2Plogo';
 
 export default function P2PFormTestPage() {
   return (

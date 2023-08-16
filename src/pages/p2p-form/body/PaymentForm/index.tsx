@@ -12,6 +12,7 @@ import TimerContent from '../TimerContent/TimerContent';
 import Copy from 'components/shared/Copy/Copy';
 import { useAcceptP2PMutation, useCancelP2PMutation } from 'store/api/p2p/p2p.api';
 import ConfirmModal from 'components/shared/ConfirmModal';
+import { FormattedMessage } from 'react-intl';
 
 // ==============================|| BASIC WIZARD - PAYMENT  ||============================== //
 
@@ -43,13 +44,14 @@ export default function PaymentForm() {
   return (
     <>
       <Typography sx={{ color: 'var(--character-secondary, #8C8C8C)', textAlign: 'center', fontWeight: 500 }}>
-        Для оплаты счета необходимо перевести{' '}
+        <FormattedMessage id="toPayThBill" />{' '}
         <Typography component={'b'} sx={{ color: 'var(--day-title, #262626)', fontWeight: 700 }}>
-          ровно {transformCurrencyValue(data?.payload.amount ? +data?.payload.amount : 0, { currency: data?.payload.currency as 'rub' })}
+          <FormattedMessage id="exactly" />{' '}
+          {transformCurrencyValue(data?.payload.amount ? +data?.payload.amount : 0, { currency: data?.payload.currency as 'rub' })}
         </Typography>{' '}
-        по номеру карты.
+        <FormattedMessage id="byCardNumber" />.
         <br />
-        Оплатите только одним переводом, иначе средства не будут зачислены
+        <FormattedMessage id="payWithOnlyOne" />.
       </Typography>
 
       <Box
@@ -69,7 +71,10 @@ export default function PaymentForm() {
           sx={{ height: '100%', zIndex: 2, position: 'relative', flexDirection: 'column', justifyContent: 'space-between', gap: '20px' }}
         >
           <Stack justifyContent={'space-between'} alignItems={'center'} direction={'row'} gap={1}>
-            <Typography sx={{ fontSize: '12px', fontWeight: 500 }}> Совершите перевод по номеру карты </Typography>
+            <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>
+              {' '}
+              <FormattedMessage id="makeTransferByCard" />{' '}
+            </Typography>
             <Box sx={{ height: '18px', svg: { height: '100%' } }}>
               {paymentColorFullIcons[data?.payload?.resipient_card.brand as 'mir']}
             </Box>
@@ -111,7 +116,8 @@ export default function PaymentForm() {
                 mt: '16px'
               }}
             >
-              Поиск вашего перевода...
+              <FormattedMessage id="findingYourTransfer" />
+              ...
             </Typography>
           </>
         ) : (
@@ -131,7 +137,7 @@ export default function PaymentForm() {
           }}
         >
           <Button onClick={onAcceptClick} startIcon={<CheckOutlined />} variant="contained" sx={{ textTransform: 'initial' }}>
-            Я отправил деньги
+            <FormattedMessage id="iSentMoney" />
           </Button>
           <ConfirmModal onSubmit={onCancelSubmit} />
         </Stack>

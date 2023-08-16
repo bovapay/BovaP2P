@@ -3,6 +3,7 @@ import React from 'react';
 // import styles from '../styles.module.scss';
 import { useCountdown } from 'hooks/useCountDown';
 import { LinearProgress, Typography } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
 
 export default function TimerContent({ countDownStart, initialDate }: { countDownStart: number; initialDate: number }) {
   const [days, hours, minutes, seconds, countDown] = useCountdown(initialDate);
@@ -21,15 +22,15 @@ export default function TimerContent({ countDownStart, initialDate }: { countDow
             mb: '16px'
           }}
         >
-          Осталось времени:{' '}
+          <FormattedMessage id="timeLeft" />:{' '}
           <Typography
             component={'span'}
             sx={{
               color: 'var(--character-secondary, #8C8C8C)'
             }}
           >
-            {minutes} мин {seconds < 10 ? '0' : ''}
-            {seconds} сек
+            {minutes} <FormattedMessage id="minutes" /> {seconds < 10 ? '0' : ''}
+            {seconds} <FormattedMessage id="seconds" />
           </Typography>
         </Typography>
       ) : (
@@ -42,7 +43,7 @@ export default function TimerContent({ countDownStart, initialDate }: { countDow
             mb: '16px'
           }}
         >
-          Время вышло
+          <FormattedMessage id="timeIsOver" />
         </Typography>
       )}
       <LinearProgress variant="determinate" value={percentage > 0 ? percentage : 0} />

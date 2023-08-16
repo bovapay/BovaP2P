@@ -12,23 +12,40 @@ import useGetTransactionData from '../useGetTransactionData';
 import Loader from 'components/Loader';
 import { transformCurrencyValue } from 'utils/transformCurrencyValue';
 import { ReactComponent as ErrorImage } from 'assets/images/maintenance/error-flat.svg';
-
-// step options
-const steps = ['Поиск реквизитов', 'Перевод на карту', 'Результат платежа'];
+import useConfig from 'hooks/useConfig';
+import { FormattedMessage } from 'react-intl';
 
 // ==============================|| FORMS WIZARD - BASIC ||============================== //
 
 const P2pFormBody = () => {
   const { data, isLoading, isError } = useGetTransactionData();
   const [activeStep, setActiveStep] = useState(0);
+  const { i18n, onChangeLocalization } = useConfig();
 
-  const handleNext = () => {
-    setActiveStep(activeStep + 1);
-  };
+  useEffect(() => {
+    if (!data?.payload.currency) {
+      return;
+    }
+    switch (data?.payload.currency) {
+      case 'gel':
+        onChangeLocalization('ge');
+        break;
+      case 'idr':
+        onChangeLocalization('id');
+        break;
+      case 'kgs':
+        onChangeLocalization('ky');
+        break;
+      // case 'uzs':
+      case 'rub':
+      default:
+        onChangeLocalization('ru');
+        break;
+    }
+  }, [data?.payload.currency]);
 
-  const handleBack = () => {
-    setActiveStep(activeStep - 1);
-  };
+  // step options
+  const steps = [<FormattedMessage id="firstTitle" />, <FormattedMessage id="secondTitle" />, <FormattedMessage id="thirdTitle" />];
 
   function getStepContent(step: number, isError: boolean) {
     if (isError) {
@@ -85,7 +102,7 @@ const P2pFormBody = () => {
         <Stack gap={'5px'}>
           <Stack direction={'row'} gap={'5px'} justifyContent={'space-between'}>
             <Stack direction={{ sm: 'row' }} sx={{ maxWidth: 'calc(100% - 150px)', overflow: 'hidden' }} gap={1}>
-              Счет на оплату{' '}
+              <FormattedMessage id="title" />{' '}
               <Typography
                 component={'span'}
                 sx={{ whiteSpace: 'nowrap', display: { sm: 'inline', xs: 'none' } }}
@@ -113,8 +130,8 @@ const P2pFormBody = () => {
       }}
     >
       <Stepper activeStep={activeStep} sx={{ pb: '20px', pt: '0px' }} alternativeLabel>
-        {steps.map((label) => (
-          <Step key={label}>
+        {steps.map((label, index) => (
+          <Step key={index}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}

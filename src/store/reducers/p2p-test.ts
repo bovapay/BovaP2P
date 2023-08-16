@@ -18,7 +18,7 @@ const initialState = {
     created_at: createdAt,
     updated_at: createdAt,
     close_at: new Date(closedAt).toISOString(),
-    callback_url: '',
+    callback_url: '/create-test',
     redirect_url: '',
     currency: '',
     resipient_card: {

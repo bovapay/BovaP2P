@@ -1,5 +1,5 @@
 import React from 'react';
-import P2PLogo from './logo';
+import P2PLogo from '../../components/shared/P2Plogo';
 import { Box } from '@mui/material';
 import P2pFormBody from './body';
 

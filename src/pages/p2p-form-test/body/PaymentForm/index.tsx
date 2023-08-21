@@ -1,27 +1,20 @@
 // material-ui
 import { Box, Button, LinearProgress, Stack, Typography } from '@mui/material';
 
-import Bg from 'assets/images/p2p-card-bg.png';
-import { paymentColorFullIcons } from 'utils/helpers/paymentColorFulIcons';
-import CardNumberFormat from 'components/shared/CardNumberFormat';
 import { CheckOutlined } from '@ant-design/icons';
 import { transformCurrencyValue } from 'utils/transformCurrencyValue';
-import TimerContent from '../../../p2p-form/body/TimerContent/TimerContent';
-import Copy from 'components/shared/Copy/Copy';
-import ConfirmModal from 'components/shared/ConfirmModal';
-import useGetTransactionData from 'pages/p2p-form-test/useGetTransactionData';
-import { useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'store';
 import { setP2PState } from 'store/reducers/p2p-test';
 import { FormattedMessage } from 'react-intl';
-import BankSwitcher from 'pages/p2p-form/body/PaymentForm/BankSwitcher';
+import TimerContent from '../../../p2p-form/body/TimerContent/TimerContent';
+import ConfirmModal from 'components/shared/ConfirmModal';
+import useGetTransactionData from 'pages/p2p-form-test/useGetTransactionData';
 import PaymentCard from 'pages/p2p-form/body/PaymentForm/PaymentCard';
 
 // ==============================|| BASIC WIZARD - PAYMENT  ||============================== //
 
 export default function PaymentForm() {
   const { data } = useGetTransactionData();
-  const [searchParams] = useSearchParams();
   const dispatch = useDispatch();
 
   async function onCancelSubmit() {
@@ -35,7 +28,7 @@ export default function PaymentForm() {
   const isPaid = data?.payload.state === 'paid';
 
   const initialDate = new Date(data?.payload.close_at as string).getTime();
-  const countDownStart = new Date(data?.payload.updated_at).getTime();
+  const countDownStart = new Date(+data?.payload.updated_at).getTime();
 
   return (
     <>

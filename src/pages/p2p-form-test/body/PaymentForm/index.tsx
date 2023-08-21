@@ -15,6 +15,7 @@ import { useDispatch } from 'store';
 import { setP2PState } from 'store/reducers/p2p-test';
 import { FormattedMessage } from 'react-intl';
 import BankSwitcher from 'pages/p2p-form/body/PaymentForm/BankSwitcher';
+import PaymentCard from 'pages/p2p-form/body/PaymentForm/PaymentCard';
 
 // ==============================|| BASIC WIZARD - PAYMENT  ||============================== //
 
@@ -41,7 +42,8 @@ export default function PaymentForm() {
       <Typography sx={{ color: 'var(--character-secondary, #8C8C8C)', textAlign: 'center', fontWeight: 500 }}>
         <FormattedMessage id="toPayThBill" />{' '}
         <Typography component={'b'} sx={{ color: 'var(--day-title, #262626)', fontWeight: 700 }}>
-          <FormattedMessage id="exactly" />{' '}
+          <FormattedMessage id="exactly" />
+          &nbsp;
           {transformCurrencyValue(data?.payload.amount ? +data?.payload.amount : 0, { currency: data?.payload.currency as 'rub' })}
         </Typography>{' '}
         <FormattedMessage id="byCardNumber" />.
@@ -49,54 +51,8 @@ export default function PaymentForm() {
         <FormattedMessage id="payWithOnlyOne" />.
       </Typography>
 
-      <Box
-        sx={{
-          borderRadius: '12px',
-          border: '1px solid var(--day-4, #F0F0F0)',
-          padding: '20px 20px 20px 20px',
-          width: '384px',
-          maxWidth: '100%',
-          height: { sm: '240px' },
-          position: 'relative'
-        }}
-      >
-        <img style={{ zIndex: 0, position: 'absolute', height: '102%', width: '102%', left: -1, top: 0 }} src={Bg} alt="bg" />
+      <PaymentCard data={data} />
 
-        <Stack
-          sx={{ height: '100%', zIndex: 2, position: 'relative', flexDirection: 'column', justifyContent: 'space-between', gap: '20px' }}
-        >
-          <Stack justifyContent={'space-between'} alignItems={'center'} direction={'row'} gap={1}>
-            <Typography sx={{ fontSize: '12px', fontWeight: 500 }}>
-              {' '}
-              <FormattedMessage id="makeTransferByCard" />{' '}
-            </Typography>
-            <Box sx={{ height: '18px', svg: { height: '100%' } }}>
-              {paymentColorFullIcons[data?.payload?.resipient_card.brand as 'mir']}
-            </Box>
-          </Stack>
-          <BankSwitcher bank={searchParams.get('bank') || ''} />
-          <Box>
-            <Stack justifyContent={'space-between'} alignItems={'center'} direction={'row'}>
-              <Typography sx={{ fontSize: '20px', fontWeight: 700, color: 'var(--day-title, #262626)' }}>
-                <CardNumberFormat value={data?.payload.resipient_card.number} />
-              </Typography>
-              <Copy value={data?.payload.resipient_card.number || ''} />
-            </Stack>
-            <Typography
-              sx={{
-                color: 'var(--day-7, #8C8C8C)',
-                fontSize: '12px',
-                fontWeight: 500
-              }}
-            >
-              {data?.payload.resipient_card.card_holder}
-            </Typography>
-          </Box>
-          <Typography color={'primary'} sx={{ fontSize: '16px', fontWeight: 700 }}>
-            {transformCurrencyValue(data?.payload.amount ? +data?.payload.amount : 0, { currency: data?.payload.currency as 'rub' })}
-          </Typography>
-        </Stack>
-      </Box>
       <Box sx={{ width: '100%', maxWidth: '512px' }}>
         {isPaid ? (
           <>

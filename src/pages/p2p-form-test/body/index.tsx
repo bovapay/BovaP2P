@@ -33,6 +33,9 @@ const P2pFormBody = () => {
       case 'kgs':
         onChangeLocalization('ky');
         break;
+      case 'byn':
+        onChangeLocalization('by');
+        break;
       // case 'uzs':
       case 'rub':
       default:

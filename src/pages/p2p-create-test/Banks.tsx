@@ -19,7 +19,7 @@ export default function Banks({
   currency: string | undefined;
   nextStep(): void;
   bank: string | undefined;
-  setBank: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setBank(val: string): void;
 }) {
   const [error, setError] = useState('');
 
@@ -36,7 +36,7 @@ export default function Banks({
       </Typography>
       <Grid container columns={12} spacing={'10px'}>
         {BANKS[currency as 'rub']?.map((i, index) => (
-          <Grid key={index} item xs={4}>
+          <Grid key={index} item xs={6} sm={6} md={4}>
             <BankSwitcher bank={i} activeSelect={bank === i} select onSelect={() => setBank(i)} />
           </Grid>
         ))}

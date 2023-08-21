@@ -41,7 +41,7 @@ export default function Country({
   nextStep
 }: {
   currency: string | undefined;
-  setCurrency: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setCurrency(val: string): void;
   nextStep(): void;
 }) {
   const [error, setError] = useState('');
@@ -59,7 +59,7 @@ export default function Country({
       </Typography>
       <Grid container columns={12} spacing={'10px'}>
         {COUNTRIES.map((i, index) => (
-          <Grid key={index} item xs={4}>
+          <Grid key={index} item xs={6} sm={6} md={4}>
             <Box
               onClick={() => setCurrency(i.currency)}
               sx={{
@@ -81,13 +81,14 @@ export default function Country({
             >
               <Typography
                 sx={{
-                  fontSize: '14px',
+                  fontSize: { xs: '12px', sm: '14px' },
                   fontWeight: 500,
                   lineHeight: '20px'
                 }}
               >
                 {i.title}{' '}
                 <Typography
+                  component={'span'}
                   sx={{
                     fontWeight: 600,
                     color: '#7265E6',
@@ -97,22 +98,22 @@ export default function Country({
                 >
                   ({i.currency})
                 </Typography>
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    right: 0,
-                    top: '50%',
-                    svg: {
-                      transform: 'translate(50%, -50%)',
-                      height: '48px',
-                      width: 'auto',
-                      borderRadius: '16px'
-                    }
-                  }}
-                >
-                  {i.icon}
-                </Box>
               </Typography>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  right: 0,
+                  top: '50%',
+                  svg: {
+                    transform: 'translate(50%, -50%)',
+                    height: { xs: '40px', sm: '48px' },
+                    width: 'auto',
+                    borderRadius: { xs: '12px', sm: '16px' }
+                  }
+                }}
+              >
+                {i.icon}
+              </Box>
             </Box>
           </Grid>
         ))}

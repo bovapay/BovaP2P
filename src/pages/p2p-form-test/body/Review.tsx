@@ -98,7 +98,11 @@ export default function Review() {
             >
               <FormattedMessage id="transferToTheCard" />{' '}
               <Typography component={'b'} sx={{ fontWeight: 500 }}>
-                <CardNumberFormat value={data?.payload.resipient_card.number} />
+                {data?.payload.currency === 'gel' || data?.payload.currency === 'byn' ? (
+                  data?.payload.resipient_card.number
+                ) : (
+                  <CardNumberFormat value={data?.payload.resipient_card.number} />
+                )}
               </Typography>
             </Typography>
           )}
@@ -129,7 +133,7 @@ export default function Review() {
                 fontWeight: 700
               }}
             >
-              {data?.payload.updated_at && parseDate(data?.payload.updated_at)}
+              {data?.payload.updated_at && parseDate(new Date())}
             </Typography>
           </Stack>
         </Stack>

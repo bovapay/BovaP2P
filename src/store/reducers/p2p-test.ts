@@ -1,12 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { IP2PResponse } from 'store/api/p2p/p2p.api';
 
 const createdAt = new Date().getTime();
 const closedAt = createdAt + 60 * 35 * 1000;
 
-console.log(createdAt);
-
-const initialState = {
+const initialState: IP2PResponse = {
   result_code: '',
   payload: {
     id: 'test31f6b695a637463c61776bf62dcfcc66dc44',
@@ -15,11 +14,11 @@ const initialState = {
     old_amount: '',
     form_url: '',
     state: 'waiting_payment',
-    created_at: createdAt,
-    updated_at: createdAt,
+    created_at: createdAt.toLocaleString(),
+    updated_at: createdAt.toLocaleString(),
     close_at: new Date(closedAt).toISOString(),
     callback_url: '/create-test',
-    redirect_url: '',
+    redirect_url: null,
     currency: '',
     resipient_card: {
       id: '',
@@ -47,11 +46,17 @@ export const p2pTestSlice = createSlice({
     },
     setP2PCurrency: (state, action: PayloadAction<string>) => {
       state.payload.currency = action.payload;
+    },
+    setP2PCard: (state, action: PayloadAction<string>) => {
+      state.payload.resipient_card.number = action.payload;
+    },
+    setP2PBank: (state, action: PayloadAction<string>) => {
+      state.payload.resipient_card.bank_name = action.payload;
     }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { setP2PState, setP2PAmount, setP2PCurrency } = p2pTestSlice.actions;
+export const { setP2PState, setP2PAmount, setP2PCurrency, setP2PCard, setP2PBank } = p2pTestSlice.actions;
 
 export default p2pTestSlice.reducer;

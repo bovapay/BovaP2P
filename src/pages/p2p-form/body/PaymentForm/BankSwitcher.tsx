@@ -78,23 +78,23 @@ export default function BankSwitcher({
   function getTitle() {
     switch (bank) {
       case 'sberbank':
-        return 'Сбербанк';
+        return 'Sberbank';
       case 'raiffeisen':
-        return 'Райффайзен Банк';
+        return 'Raiffeisen';
       case 'tinkoff':
-        return 'Тинькофф банк';
+        return 'Tinkoff';
       case 'belinvest':
-        return 'Белинвестбанк';
+        return 'Belinvest';
       case 'mt_bank':
-        return 'Мтбанк';
+        return 'MT Bank';
       case 'bsb_bank':
-        return 'БСБ Банк';
+        return 'BSB';
       case 'technobank':
-        return 'Технобанк';
+        return 'Technobank';
       case 'bnb_bank':
-        return 'БНБ-Банк';
+        return 'BNB';
       case 'alfa_bank':
-        return 'Альфа-Банк';
+        return 'Alfa Bank';
       case 'credo_bank':
         return 'Credo Bank';
       case 'tbc_bank':
@@ -145,6 +145,9 @@ export default function BankSwitcher({
       >
         <Box
           sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             svg: {
               width: '40px',
               height: '40px'
@@ -155,7 +158,7 @@ export default function BankSwitcher({
         </Box>
         <Typography
           sx={{
-            fontSize: '14px',
+            fontSize: { xs: '12px', sm: '14px' },
             fontWeight: 500,
             lineHeight: '20px'
           }}

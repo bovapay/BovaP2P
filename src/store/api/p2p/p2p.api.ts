@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQueryWithToken from '../../base-query';
 
-interface IResponse {
+export interface IP2PResponse {
   result_code: string;
   payload: {
     id: string;
@@ -34,7 +34,7 @@ export const p2pApi = createApi({
   reducerPath: 'p2pApi',
   baseQuery: baseQueryWithToken,
   endpoints: (builder) => ({
-    getP2P: builder.query<IResponse, { id: string | number }>({
+    getP2P: builder.query<IP2PResponse, { id: string | number }>({
       query: ({ id }) => `p2p_transactions/${id}`
     }),
     acceptP2P: builder.mutation<any, { id: string | number }>({

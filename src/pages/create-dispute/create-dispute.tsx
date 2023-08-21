@@ -18,7 +18,6 @@ export default function CreateDispute({ isOpen, handleClose, id }: { isOpen: boo
 
   const [submitError, setSubmitError] = useState('');
   function onSubmit(values: any) {
-    console.log(values);
     if (values.files.length > 2) {
       return setSubmitError('Должно быть не более двух файлов');
     }
